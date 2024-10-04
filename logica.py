@@ -15,6 +15,7 @@ for count in range (10):
     response = int(input())
     if response == x+y: 
         #A conta cai
+        score = score+1
         sequence = sequence+1
         if sequence%10==0 and vida<3:
             vida = vida+1
@@ -30,7 +31,7 @@ for count in range (10):
             #Marcelo ataque supremo
             #Game over (Levi morrendo)
             print ("Game Over")
-            #Final: Levi acorda no meio da aula de matemática e recebe sua prova, quando vê, sua nota foi 0
+            #Final: Levi acorda no meio da aula de matemática e recebe sua prova, quando vê, sua nota foi score/4
             break
 
 for count in range (10): #Mesmas anotações do bloco acima
@@ -39,6 +40,7 @@ for count in range (10): #Mesmas anotações do bloco acima
     print (x, '-', y)
     response = int(input())
     if response == x-y:
+        score = score+1
         sequence = sequence+1
         if sequence%10==0 and vida<3:
             vida = vida+1
@@ -49,49 +51,10 @@ for count in range (10): #Mesmas anotações do bloco acima
         sequence = 0
         if vida==0:
             print ("Game Over")
-            #Final: Levi acorda no meio da aula de matemática e recebe sua prova, quando vê, sua nota foi 2
+            #Final: Levi acorda no meio da aula de matemática e recebe sua prova, quando vê, sua nota foi score/4
             break
 
 #Tempo de 3s para a onda seguinte
-
-num = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-for count in range (10):
-    x = random.choice(num)
-    y = random.choice(num)
-    print (x, '+', y)
-    response = int(input())
-    if response == x+y:
-        sequence = sequence+1
-        if sequence%10==0 and vida<3:
-            vida = vida+1
-        if sequence>max:
-            max = sequence
-    else:
-        vida = vida-1
-        sequence = 0
-        if vida==0:
-            print ("Game Over")
-            #Final: Levi acorda no meio da aula de matemática e recebe sua prova, quando vê, sua nota foi 4
-            break
-
-for count in range (10):
-    x = random.choice(num)
-    y = random.choice(num)
-    print (x, '-', y)
-    response = int(input())
-    if response == x-y:
-        sequence = sequence+1
-        if sequence%10==0 and vida<3:
-            vida = vida+1
-        if sequence>max:
-            max = sequence
-    else:
-        vida = vida-1
-        sequence = 0
-        if vida==0:
-            print ("Game Over")
-            #Final: Levi acorda no meio da aula de matemática e recebe sua prova, quando vê, sua nota foi 6
-            break
         
 for count in range (10):
     x = random.choice(num)
@@ -99,6 +62,7 @@ for count in range (10):
     print (x, 'x', y)
     response = int(input())
     if response == x*y:
+        score = score+1
         sequence = sequence+1
         if sequence%10==0 and vida<3:
             vida = vida+1
@@ -109,7 +73,7 @@ for count in range (10):
         sequence = 0
         if vida==0:
             print ("Game Over")
-            #Final: Levi acorda no meio da aula de matemática e recebe sua prova, quando vê, sua nota foi 8
+            #Final: Levi acorda no meio da aula de matemática e recebe sua prova, quando vê, sua nota foi score/4
             break
 
 for count in range (10):
@@ -119,6 +83,7 @@ for count in range (10):
     print (d, '÷', x)
     response = int(input())
     if response == y:
+        score = score+1
         sequence = sequence+1
         if sequence%10==0 and vida<3:
             vida = vida+1
@@ -129,7 +94,7 @@ for count in range (10):
         sequence = 0
         if vida==0:
             print ("Game Over")
-            #Final: Levi acorda no meio da aula de matemática e recebe sua prova, quando vê, sua nota foi 8
+            #Final: Levi acorda no meio da aula de matemática e recebe sua prova, quando vê, sua nota foi score/4
             break
 #Final: Levi acorda no meio da aula de matemática e recebe sua prova, quando vê, sua nota foi 10        
 print ("Sequência máxima: ", max)
