@@ -17,9 +17,9 @@ SCREEN_HEIGHT = 600
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 # Carregar a imagem do fantasma
-ghost_image = pygame.image.load('ghost.png')  # Substitua 'ghost.png' pelo caminho correto do seu arquivo de imagem
+ghost_image = pygame.image.load('imagens/ghost.png')  # Substitua 'ghost.png' pelo caminho correto do seu arquivo de imagem
 ghost_image = pygame.transform.scale(ghost_image, (80, 80))  # Redimensione conforme necessário
-background_image = pygame.image.load('background_image.png')
+background_image = pygame.image.load('imagens/background_image.png')
 background_image = pygame.transform.scale(background_image, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
 # Definindo o relógio para controlar o FPS
@@ -39,10 +39,10 @@ def load_gif(filename):
     return frames
 
 # Carregando as animações do gato
-cat_normal_frames = load_gif('cat_normal.gif')
-cat_damage_frames = load_gif('cat_damage.gif')
-cat_win_frames = load_gif('cat_win.gif')
-cat_game_over_frames = load_gif('cat_game_over.gif')
+cat_normal_frames = load_gif('imagens/cat_normal.gif')
+cat_damage_frames = load_gif('imagens/cat_damage.gif')
+cat_win_frames = load_gif('imagens/cat_win.gif')
+cat_game_over_frames = load_gif('imagens/cat_game_over.gif')
 
 # Variáveis do gato
 cat_frames = cat_normal_frames
