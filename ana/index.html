@@ -1,24 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Magic Cat Game</title>
+    <title>Jogo do Fantasma</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-
 </head>
 <body>
     <div id="game-container">
-        <canvas id="gameCanvas" width="800" height="600"></canvas>
-        <div id="pontuacao">pontuação: 0</div>
+        <canvas id="gameCanvas"></canvas>
+        <div id="pontuacao"></div>
         <div id="vidas"></div>
         <div id="game_over" class="hidden">
-            <p>Game Over! Want to play again?</p>
-            <button id="play-again">Yes</button>
-            <button id="exit-game">No</button>
+            <h1>Game Over</h1>
+            <button id="play-again">Play Again</button>
+            <button id="exit-game">Exit</button>
         </div>
+        <img id="levigif" src="imagens/levi1.gif" class="hidden">
     </div>
+    
     <script src="script.js"></script>
 </body>
 </html>

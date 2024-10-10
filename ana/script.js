@@ -5,6 +5,10 @@ const ctx = canvas.getContext('2d'); // contexto 2d do canvas, permite criar for
 const exibirpontuacao = document.getElementById('pontuacao'); // chama a pontuação do html (placar)
 const exibirvidas = document.getElementById('vidas'); // vidas do usuário (corações no canto superior esquerdo)
 const exibirgameover = document.getElementById('game_over'); // tela de game over
+const levigif = new Image ();
+levigif.src='imagens/levi1.gif'
+
+
 
 canvas.width = 800;
 canvas.height = 600; // configurações do tamanho da tela que vai rodar o jogo
@@ -18,20 +22,25 @@ let userinput = ""; // entrada do usuário
 const totaldevida = 5; // total de vidas
 
 const levizao = { // chamando a variável do levi e configurando ela
-    x: canvas.width / 10 - 20,
+    x: canvas.width / 10,
     y: canvas.height - 220,
     width: 150,
     height: 200,
-    img: new Image()
+    img: levigif
 };
-levizao.img.src = 'imagens/levi1.gif'; // chamando a img do levi
+levigif.onload = function() {
+    levigif.classList.remove('hidden'); // Remover a classe hidden ao carregar a imagem
+    loopdogame();
+}
+
+
 
 const ghost = { // mesma coisa com o fantasma
     x: canvas.width / 10 - 40,
-    y: -100,
+    y: -80,
     width: 80,
     height: 80,
-    speed: 1.3,
+    speed: 1,
     img: new Image(),
     contademat: { //configurando a conta de matemática para somar 2 números aleatórios entre 0 e 10
         num1: Math.floor(Math.random() * 11),
@@ -43,8 +52,7 @@ ghost.img.src = 'imagens/ghost.png'; // chamando a img do fantasma
 ghost.contademat.respostacerta = ghost.contademat.num1 + ghost.contademat.num2; // Calcula a resposta certa na inicialização
 
 function desenholevi() {  // função para desenhar o levi
-    console.log("desenhandolevi")
-    ctx.drawImage(levizao.img, levizao.x, levizao.y, levizao.width, levizao.height);
+    ctx.drawImage(levigif, levizao.x, levizao.y, levizao.width, levizao.height);
 }
 
 function desenhoghost() { // função para desenhar o fantasma e configurar a conta p aparecer acima dele
@@ -128,7 +136,9 @@ function restart() { // reinicia o jogo
     desenhovidas();
     loopdogame();
 }
-
+levigif.onload =function(){
+    loopdogame()
+}
 function loopdogame() {
     console.log("tafuncioando")
     loopdojg = requestAnimationFrame(loopdogame);
@@ -156,6 +166,7 @@ function loopdogame() {
                 telagameover();
             }
         }
+
     }
 }
 
