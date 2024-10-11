@@ -26,13 +26,13 @@
     width: 300px;
     position: absolute;
     bottom: 15px;
-    animation: enemie_animation 5s infinite linear;
+    animation: enemie_animation 6s infinite linear;
 }
 
 @keyframes enemie_animation {
     0% {
         bottom: 15px;
-        right: -370px;
+        right: -200px;
     }
     15% {
         bottom: 70px;
@@ -48,10 +48,14 @@
     }
     100% {
         bottom: 70px;
-        right: 100%;
+        right: 88%;
     }
 }
 
-
-
+#enemy-text {
+    position: absolute;
+    color: white;
+    font-size: 20px;
+    pointer-events: none; /* Para que cliques não afetem o texto */
+}
 
