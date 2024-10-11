@@ -1,5 +1,6 @@
 const levi = document.querySelector('.levi');
 const enemie = document.querySelector('.enemie');
+const vidas = 5;
 
 document.addEventListener('keydown', function(event) {
     if (event.key === 'Enter') {
@@ -12,20 +13,21 @@ document.addEventListener('keydown', function(event) {
         } 
 });
 
-
-
-const loop = setInterval(() => { /*Criar uma função com isso, já que vai repetir 4 vezes no código*/
+const loop = setInterval(() => {
         
     const enemiePosition = enemie.offsetLeft;
-    if (enemiePosition <= 70) {        
-        levi.src = 'imagens/levidano.gif'; /*TimeOut or Usar dois gifs, um com uma animação de 900ms, if levi.style.animation === 'none', troca pro outro gif*/
+    const leviPosition = levi.offsetLeft
+    if (enemiePosition <= leviPosition) {        
+        levi.src = 'imagens/estatico.png'; 
+        setTimeout(() => {
+            levi.src = 'imagens/levi1.gif';
+        }, 1350);        
     }
-
-    
-
-
-}, 10);
+}, 500);
 
 
-/*enemie.style.animation = 'none' para quando for game over*/
+
+
+
+
 

@@ -21,14 +21,6 @@
     left: 90px;
 }
 
-.levidano{
-    width: 170px;
-    position: absolute;
-    bottom: 30px;
-    left: 90px;
-    animation: dano 900ms;
-}
-
 .enemie{
     transform: scaleX(-1);
     width: 300px;
@@ -40,7 +32,7 @@
 @keyframes enemie_animation {
     0% {
         bottom: 15px;
-        right: -300px;
+        right: -370px;
     }
     15% {
         bottom: 70px;
@@ -56,21 +48,10 @@
     }
     100% {
         bottom: 70px;
-        right: 80%;
+        right: 100%;
     }
 }
 
-@keyframes dano {
-    0% {
-        display: visible;
-    }
-    99% {
-        display: visible;
-    }
-    100% {
-        display: block;
-    }
-}
 
 
 
