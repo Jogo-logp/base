@@ -1,0 +1,76 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.game_board{
+    width: 800px;
+    height: 603px;
+    background-image: url(imagens/sala_de_aula.webp);
+    border: 1px solid #333;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+}
+
+.levi{
+    width: 170px;
+    position: absolute;
+    bottom: 30px;
+    left: 90px;
+}
+
+.levidano{
+    width: 170px;
+    position: absolute;
+    bottom: 30px;
+    left: 90px;
+    animation: dano 900ms;
+}
+
+.enemie{
+    transform: scaleX(-1);
+    width: 300px;
+    position: absolute;
+    bottom: 15px;
+    animation: enemie_animation 5s infinite linear;
+}
+
+@keyframes enemie_animation {
+    0% {
+        bottom: 15px;
+        right: -300px;
+    }
+    15% {
+        bottom: 70px;
+    }
+    30%{
+        bottom: 15px;
+    }
+    45%{
+        bottom: 90px;
+    }
+    60%{
+        bottom: 15px;
+    }
+    100% {
+        bottom: 70px;
+        right: 80%;
+    }
+}
+
+@keyframes dano {
+    0% {
+        display: visible;
+    }
+    99% {
+        display: visible;
+    }
+    100% {
+        display: block;
+    }
+}
+
+
+
