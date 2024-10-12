@@ -13,14 +13,19 @@ document.addEventListener('keydown', function(event) {
     }
 });
 
+function acomp_texto (){
+    setInterval (() => {
+        const enemiePosition = enemie.offsetLeft;
+        enemyText.style.left = (enemiePosition + 100) + 'px';
+        enemyText.style.top = (enemie.offsetTop - 20) + 'px'; // Ajusta a posição do texto  
+    }, 0);
+}
+
 const loop = setInterval(() => {
     const enemiePosition = enemie.offsetLeft;
     const leviPosition = levi.offsetLeft;
-    enemyText.style.left = (enemiePosition + 100) + 'px';
-    enemyText.style.top = (enemie.offsetTop - 20) + 'px'; // Ajusta a posição do texto
-
-       
-    if (enemiePosition <= leviPosition) {        
+    acomp_texto ();
+    if (enemiePosition <= leviPosition && levi.src.endsWith('levi1.gif')) {        
         levi.src = 'imagens/estatico.png'; 
         setTimeout(() => {
             levi.src = 'imagens/levi1.gif';
