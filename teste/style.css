@@ -1,3 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+body {
+    font-family: 'Press Start 2P', cursive;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -59,3 +65,42 @@
     pointer-events: none; /* Para que cliques não afetem o texto */
 }
 
+#inputField {
+    display: block; /* Mostra o input desde o início */
+    position: absolute; /* Permite posicionar o input */
+    top: 20%; /* Distância do topo da página */
+    left: 50%; /* Centraliza horizontalmente */
+    transform: translateX(-50%);
+    border: none;
+    width: 200px;
+    height: 70px;
+    text-align: center;
+    background: none;
+    color: white;
+    font-family: 'Press Start 2P', cursive;
+    font-size: xx-large;
+    text-shadow: 
+        -2px -2px 0 #000,  
+        2px -2px 0 #000,
+        -2px  2px 0 #000,
+        2px  2px 0 #000;
+}
+
+#gameOverScreen {
+    display: none; /* Oculta a tela de Game Over inicialmente */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: white;
+}
+button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+}
