@@ -9,7 +9,12 @@ body {
     padding: 0;
     box-sizing: border-box;
 }
-
+/*#levigif{
+    bottom: 80px;
+    top: 380px;
+    width: 150;
+    height: 200;
+}*/
 body, html {
     height: 100%;
     display: flex;

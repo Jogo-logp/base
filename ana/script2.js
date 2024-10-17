@@ -1,113 +1,115 @@
-const canvas = document.getElementById('gameCanvas'); //chama a id do canvas do html
-const ctx = canvas.getContext('2d'); //contexto 2d do canvas, permite criar formas, imagens e textos. ctx é abreviação de context e é usado para desenhar no canvas
+const canvas = document.getElementById('gameCanvas'); // chama a id do canvas do html
+const ctx = canvas.getContext('2d'); // contexto 2d do canvas, permite criar formas, imagens e textos. ctx é abreviação de context e é usado para desenhar no canvas
 
-//elementos de interface abaixo
-const exibirpontuação = document.getElementById('pontuacao'); //chama a pontuação do html (placar)
-const exibirvidas = document.getElementById('vidas'); //vidas do usuário (corações no canto superior esquerdo)
-const exibirgameover = document.getElementById('game_over'); //tela de game over
+// elementos de interface abaixo
+const exibirpontuacao = document.getElementById('pontuacao'); // chama a pontuação do html (placar)
+const exibirvidas = document.getElementById('vidas'); // vidas do usuário (corações no canto superior esquerdo)
+const exibirgameover = document.getElementById('game_over'); // tela de game over
+const gifFrames = [
+    'imagens/l.normal1',
+    'imagens/l.normal2',
+    'imagens/l.normal3',
+    'imagens/l.normal4',
+    'imagens/l.normal5',
+];
 
 canvas.width = 800;
 canvas.height = 600; // configurações do tamanho da tela que vai rodar o jogo
 
-//abaixo encontram-se as *variáveis de estado* (variável que mantém informações sobre a condição atual do jogo, como ele ainda não começou, tudo é false/0/vazio, exceto a quantidade de vidas)
-let pontuacao = 0; //placar(pontuação)
-let respostaserradas = 0; //contador de respostas erradas para contar quando acaba o jogo
+// Variáveis de estado
+let pontuacao = 0;
+let respostaserradas = 0;
 let gameover = false; 
-let loopdojg; //chama o loop do jogo
-let userinput = ""; // entrada do usuário
-const totaldevida = 5; // total de vidas
+let loopdojg;
+let userinput = "";
+const totaldevida = 5;
 
-const levizao = { // chamando a variável do levi e configurando ela
-    x: canvas.width / 10 - 20,
-    y: canvas.height - 250,
+const levizao = {
+    x: canvas.width / 10,
+    y: canvas.height - 220,
     width: 150,
     height: 200,
-    img: new Image()
+    currentFrame: 0,
 };
-levizao.img.src = 'imagens/levi1.gif'; //chamando a img do levi
 
-const ghost = { //mesma coisa com o fantasma
+// Carregando imagens do Levi
+const images = gifFrames.map(src => {
+    const img = new Image();
+    img.src = src;
+    return img;
+});
+
+// Função para desenhar o Levi animado
+function desenhaFrame() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpa o canvas
+
+    const frame = images[levizao.currentFrame];
+    ctx.drawImage(frame, levizao.x, levizao.y, levizao.width, levizao.height);
+
+    levizao.currentFrame = (levizao.currentFrame + 1) % images.length; // Próximo frame
+
+    requestAnimationFrame(desenhaFrame);
+}
+
+// Quando todas as imagens estiverem carregadas, iniciar a animação
+Promise.all(images.map(img => new Promise(resolve => {
+    img.onload = resolve;
+}))).then(() => {
+    desenhaFrame();
+});
+
+const ghost = { 
     x: canvas.width / 10 - 40,
     y: -100,
     width: 80,
     height: 80,
     speed: 1,
     img: new Image(),
-    contademat: { //configurando a conta de matemática para somar 2 números aleatórios entre 0 e 10
+    contademat: {
         num1: Math.floor(Math.random() * 11),
         num2: Math.floor(Math.random() * 11),
-        respostacerta: null // Inicializa respostacerta
+        respostacerta: null
     }
 };
+ghost.img.src = 'imagens/ghost.png'; 
+ghost.contademat.respostacerta = ghost.contademat.num1 + ghost.contademat.num2;
 
-ghost.img.src = 'imagens/ghost.png'; //chamando a img do fantasma
-ghost.contademat.respostacerta = ghost.contademat.num1 + ghost.contademat.num2; // Calcula a resposta certa na inicialização
-
-function desenholevi() {  //função para desenhar o levi
-    ctx.drawImage(levizao.img, levzao.x, levizao.y, levizao.width, levizao.height);
-}
-
-function desenhoghost() { //função para desenhar o fantasma e configurar a conta para aparecer acima dele
+function desenhoghost() {
     ctx.drawImage(ghost.img, ghost.x, ghost.y, ghost.width, ghost.height);
     ctx.fillStyle = "white";
     ctx.font = "15px 'Press Start 2P'";
     ctx.fillText(`${ghost.contademat.num1} + ${ghost.contademat.num2} = ?`, ghost.x + 10, ghost.y - 10);
 }
 
-function desenhopontuacao() { //função pra desenhar a pontuação do usuário
-    exibirpontuacao.textContent = `pontuação: ${pontuacao}`;
-}
-
-function desenhovidas() { //função para exibir as vidas do usuário com corações
-    exibirvidas.innerHTML = '';
-    for (let i = 0; i < totaldevida; i++) { // iterando de 0 até o total de vidas (definido como 5) de 1 em 1.
-        const vida = document.createElement('span');
-        vida.textContent = '❤️';
-        vida.style.opacity = (i < respostaserradas) ? '0.5' : '1'; //se o i do for (que basicamente conta quantas rodadas o usuário jogou) for menor que a quantidade de respostas erradas, o coração ficará translúcido, indicando que o usuário perdeu uma vida, se não a opacidade continua a mesma coisa
-        exibirvidas.appendChild(vida);
-    }
-}
-
-function desenhoinput() { //função para desenhar o que o usuário digita como resposta, para que fique mais intuitivo o que acontece no jogo
-    ctx.fillStyle = "black"; 
-    ctx.font = "15px 'Press Start 2P'"; 
-    ctx.fillText(`Sua resposta: ${userinput}`, canvas.width / 2 - 100, 550); 
-}
-
-function resetarghost() { //função para resetar o ghost quando necessário
-    const lado = Math.random() < 0.5 ? 'horizontal' : 'vertical'; //define se o fantasma vai aparecer no eixo x ou y, a função math.random gera um n aleatório entre 0 e 1 e se o n for menor que 0.5 o lado será horizontal, caso contrário será vertical
-
-    if (lado === 'horizontal') { //condição para saber se o lado "sorteado" é horizontal
-        ghost.x = Math.random() < 0.5 ? -ghost.width : canvas.width; //se refere à posição horizontal do fantasma, se for verdadeiro, o fantasma iniciará fora da tela à esquerda, garantindo que ele não apareça no meio da tela. se não for verdadeiro, o fantasma vai começar fora da tela à direita
-        ghost.y = Math.random() * canvas.height;  //define aleatoriamente a posição do ghost em relação ao eixo y
-    } else { //se a condição anterior não for verdadeira (vertical) define outro eixo x e y para o fantasma
-        ghost.x = Math.random() * canvas.width; // pode começar em qualquer ponto no eixo x
-        ghost.y = Math.random() < 0.5 ? -ghost.height : canvas.height;
-    }
-
-    //  novo problema matemático
-    ghost.contademat.num1 = Math.floor(Math.random() * 11); // Garante que o número aleatório vá até 10
-    ghost.contademat.num2 = Math.floor(Math.random() * 11); // Garante que o número aleatório vá até 10
-    ghost.contademat.respostacerta = ghost.contademat.num1 + ghost.contademat.num2; // Atualiza a resposta certa
-    userinput = ""; // Reseta a entrada do usuário
-    ghost.speed = 1; // Garante que a velocidade seja resetada
-}
-
-function checarresposta() { //checa a resposta do usuário
-    // Converte a entrada do usuário para um número
-    const entradadousuario = parseInt(userinput, 10); //declara a entrada do usuário como int com a função parseInt
+function checarresposta() {
+    const entradadousuario = parseInt(userinput, 10); 
     if (entradadousuario === ghost.contademat.respostacerta) {
-        pontuação++;
+        pontuacao++;
         resetarghost(); 
-        //condição que verifica se a resposta está certa, se for verdadeiro aumenta a pontuação e reseta o ghost para uma nova conta aparecer
     } else {
         respostaserradas++;
-        if (respostaserradas >= totaldevida) { // Verifica se as vidas acabaram
+        if (respostaserradas >= totaldevida) {
             telagameover();
         }
-        //se a resposta estiver errada, a quantidade de respostas erradas aumenta (usuário perde uma vida) e caso as vidas já tenham sido todas perdidas o jogo acaba
     }
-    userinput = ""; // Reseta a entrada do usuário após verificar
+    userinput = "";
+}
+
+function resetarghost() {
+    const lado = Math.random() < 0.5 ? 'horizontal' : 'vertical'; 
+    if (lado === 'horizontal') {
+        ghost.x = Math.random() * canvas.width;
+        ghost.y = -canvas.height; 
+    } else {
+        ghost.x = canvas.width; 
+        ghost.y = Math.random() * canvas.height;
+    }
+
+    ghost.contademat.num1 = Math.floor(Math.random() * 10); 
+    ghost.contademat.num2 = Math.floor(Math.random() * 10);
+    ghost.contademat.respostacerta = ghost.contademat.num1 + ghost.contademat.num2;
+    userinput = "";
+    ghost.speed = 1;
 }
 
 function telagameover() {
@@ -117,58 +119,31 @@ function telagameover() {
     document.getElementById('vidas').style.display = 'none';
 }
 
-function restart() { //recomeça o jogo
-    pontuação = 0;
-    respostaserradas = 0;
-    gameover = false;
-    exibirgameover.classList.add('hidden');
-    document.getElementById('pontuacao').style.display = 'block';
-    document.getElementById('vidas').style.display = 'block';
-    resetarghost();
-    desenhopontuação();
-    desenhovidas();
-    loopdogame();
-}
-
 function loopdogame() {
     loopdojg = requestAnimationFrame(loopdogame);
     if (!gameover) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        desenholevi();
+        desenhaFrame();
         desenhoghost();
-        desenhopontuação();
+        desenhopontuacao();
         desenhovidas();
-        desenhoinput(); // Desenha a entrada do usuário na tela
-        if (ghost.x < levizao.x) {
-            ghost.x += ghost.speed; // Move para a direita se o fantasma está à esquerda do gato
+        desenhoinput(); 
+
+        const dx = levizao.x - ghost.x; 
+        const dy = levizao.y - ghost.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance > 0) {
+            ghost.x += (dx / distance) * ghost.speed; 
+            ghost.y += (dy / distance) * ghost.speed; 
         }
-        ghost.y += ghost.speed;
-        if (ghost.y + ghost.height >= levizao.y) {
-            resetarghostF();
+
+        if (ghost.y + ghost.height >= levizao.y && ghost.x < levizao.x + levizao.width) {
+            resetarghost();
             respostaserradas++;
-            if (respostaserradas >= totaldevida) { // Verifica se as vidas acabaram
+            if (respostaserradas >= totaldevida) {
                 telagameover();
             }
         }
     }
 }
-
-window.addEventListener("keydown", function(event) {
-    if (!gameover && event.key >= 0 && event.key <= 9) {
-        userinput += event.key; // Adiciona o número pressionado à entrada do usuário
-    } else if (event.key === "Enter") {
-        if (userinput.length > 0) {
-            checarresposta(); // Verifica a resposta quando o usuário pressiona Enter
-        }
-    } else if (event.key === "Backspace") {
-        userinput = userinput.slice(0, -1); // Remove o último caractere da entrada do usuário
-    }
-});
-
-document.getElementById('play-again').addEventListener('click', restart); // Reinicia o jogo quando clica em "Play Again"
-document.getElementById('exit-game').addEventListener('click', function (){
-    gameover = true;
-    cancelAnimationFrame(loopdojg);
-    document.getElementById('game-container').style.display = 'none';
-});
-loopdogame()

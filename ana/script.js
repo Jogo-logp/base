@@ -8,6 +8,8 @@ const exibirgameover = document.getElementById('game_over'); // tela de game ove
 const levigif = new Image ();
 levigif.src='imagens/levi1.gif'
 
+
+
 canvas.width = 800;
 canvas.height = 600; // configurações do tamanho da tela que vai rodar o jogo
 
@@ -26,10 +28,6 @@ const levizao = { // chamando a variável do levi e configurando ela
     height: 200,
     img: levigif
 };
-levigif.onload = function() {
-    levigif.classList.remove('hidden'); // Remover a classe hidden ao carregar a imagem
-    loopdogame();
-}
 
 
 
@@ -83,10 +81,7 @@ function desenhoinput() { // função para desenhar o que o usuário digita como
 function resetarghost() { // função para resetar o ghost quando necessário
     const lado = Math.random() < 0.5 ? 'horizontal' : 'vertical'; //define se o fantasma vai aparecer no eixo x ou y, a função math.random gera um n aleatório entre 0 e 1 e se o n for menor que 0.5 o lado será horizontal, caso contrário será vertical
     if (lado === 'horizontal') { //condição para saber se o lado "sorteado" é horizontal
-        const lado = const lado + 0.6;
-        ghost.x= canvas.width;
-        ghost.y = Math.random () * canvas.height;
-        //ghost.x = Math.random() * canvas.width;
+        ghost.x = Math.random() * canvas.width;//se refere à posição horizontal do fantasma, se for verdadeiro, o fantasma iniciará fora da tela à esquerda, garantindo que ele não apareça no meio da tela. se não for verdadeiro, o fantasma vai começar fora da tela à direita
         ghost.y = -canvas.height; //define aleatoriamente a posição do ghost em relação ao eixo y
     } else { //se a condição anterior não for verdadeira (vertical) define outro eixo x e y para o fantasma
         ghost.x = canvas.width; // Pode começar em qualquer ponto no eixo x

@@ -85,7 +85,6 @@ body {
         -2px  2px 0 #000,
         2px  2px 0 #000;
 }
-
 #gameOverScreen {
     display: none; /* Oculta a tela de Game Over inicialmente */
     position: absolute;
