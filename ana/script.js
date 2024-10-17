@@ -37,7 +37,7 @@ levigif.onload = function() {
 
 const ghost = { // mesma coisa com o fantasma
     x: canvas.width / 10 - 40,
-    y: -80,
+    y: -100,
     width: 80,
     height: 80,
     speed: 1,

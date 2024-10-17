@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #desenho1 {
+            width: 500px;
+            height: 500px;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <img src="imagens/FLYING.png" alt="">
+    <canvas id="desenho1"></canvas>
+
+    <script>
+        var canvas = document.getElementById('desenho1');
+        var ctx = canvas.getContext('2d');
+        let teste = new Image();
+        teste.src = 'imagens/flying.png';
+        let numsprite = 0;
+        let posIniX = 0;
+        let largsprite = 0;
+        let altsprite = 0;  // Correção da variável
+        let numsprites = 4;  // Correção da variável
+
+        teste.addEventListener('load', () => {
+            largsprite = teste.width / numsprites;
+            altsprite = teste.height;  // Corrigido para usar a altura da imagem inteira
+            posIniX = largsprite * numsprite;
+            ctx.drawImage(teste, posIniX, 0, largsprite, altsprite, 0, 0, largsprite, altsprite);
+        });
+
+        let anima = setInterval(() => {
+            numsprite++;
+            if (numsprite >= numsprites) {
+                numsprite = 0;
+            }
+            posIniX = largsprite * numsprite;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);  // Limpar o canvas antes de desenhar o próximo frame
+            ctx.drawImage(teste, posIniX, 0, largsprite, altsprite, 0, 0, largsprite, altsprite);
+        }, 200);
+    </script>
+</body>
+</html>
