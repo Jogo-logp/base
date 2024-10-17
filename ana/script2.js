@@ -39,6 +39,7 @@ const ghost = { //mesma coisa com o fantasma
         respostacerta: null // Inicializa respostacerta
     }
 };
+
 ghost.img.src = 'imagens/ghost.png'; //chamando a img do fantasma
 ghost.contademat.respostacerta = ghost.contademat.num1 + ghost.contademat.num2; // Calcula a resposta certa na inicialização
 
@@ -143,7 +144,7 @@ function loopdogame() {
         }
         ghost.y += ghost.speed;
         if (ghost.y + ghost.height >= levizao.y) {
-            resetarghost();
+            resetarghostF();
             respostaserradas++;
             if (respostaserradas >= totaldevida) { // Verifica se as vidas acabaram
                 telagameover();
