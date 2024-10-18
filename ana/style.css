@@ -29,7 +29,7 @@ body, html {
 
 canvas {
     border: 2px solid white;
-    background-image: url(imagens/background_image2.png);
+    background-image: url(imagens/sala_de_aula.webp);
     background-repeat: no-repeat;
     background-size: cover;
     display: block;
@@ -40,14 +40,6 @@ canvas {
     height: 600px;
 }
 
-#pontuacao {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    color: white;
-    font-size: 20px;
-    font-family: 'Press Start 2P', cursive; /* Fonte em estilo pixel */
-}
 
 #vidas {
     position: absolute;
@@ -63,51 +55,74 @@ canvas {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    color: white;
-    font-size: 32px;
+    color: rgb(252, 252, 252);
+    text-shadow:  5px 5px 10px rgb(241, 40, 36);
+    font-size: 25px;
     font-family: 'Press Start 2P', cursive; /* Fonte em estilo pixel */
     text-align: center;
     background-color: rgba(0, 0, 0, 0.8); /* Fundo semitransparente */
     padding: 20px;
     border-radius: 10px;
 }
-#fase1 {
+
+#game_won {
     position: absolute;
-    top: 30%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    color: rgb(11, 2, 2);
-    font-size: 8px;
+    color: rgb(252, 252, 252);
+    text-shadow:  5px 5px 10px rgb(241, 40, 36);
+    font-size: 25px;
     font-family: 'Press Start 2P', cursive; /* Fonte em estilo pixel */
     text-align: center;
+    background-color: rgba(0, 0, 0, 0.8); /* Fundo semitransparente */
     padding: 20px;
     border-radius: 10px;
+}
+h3{
+    font-size: 18px;
+}
+#fase1 {
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 15px;
+    border-radius: 10px;
+    color: rgb(241, 40, 36);
+    text-shadow:  2px 2px 0 rgb(0, 0, 0);
+    font-size: 7px;
+    font-family: 'Press Start 2P', cursive; /* Fonte em estilo pixel */
+    text-align: center;
 }
 #fase2 {
     position: absolute;
-    top: 30%;
+    top: 20%;
     left: 50%;
     transform: translate(-50%, -50%);
-    color: rgb(11, 2, 2);
-    font-size: 8px;
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 15px;
+    border-radius: 10px;
+    color: rgb(241, 40, 36);
+    text-shadow:  2px 2px 0 rgb(0, 0, 0);
+    font-size: 7px;
     font-family: 'Press Start 2P', cursive; /* Fonte em estilo pixel */
     text-align: center;
-    padding: 20px;
-    border-radius: 10px;
-    display: none;
 }
 #fase3 {
-    display: none;
     position: absolute;
-    top: 30%;
+    top: 20%;
     left: 50%;
     transform: translate(-50%, -50%);
-    color: rgb(11, 2, 2);
-    font-size: 8px;
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 15px;
+    border-radius: 10px;
+    color: rgb(241, 40, 36);
+    text-shadow:  2px 2px 0 rgb(0, 0, 0);
+    font-size: 7px;
     font-family: 'Press Start 2P', cursive; /* Fonte em estilo pixel */
     text-align: center;
-    padding: 20px;
-    border-radius: 10px;
 }
 
 #play-again, #exit-game {
@@ -122,9 +137,22 @@ canvas {
 }
 
 #play-again:hover, #exit-game:hover {
-    background-color: lightgray;
+    background-color: rgb(241, 40, 36);
+}
+#play-again2, #exit-game2 {
+    margin-top: 10px;
+    padding: 10px 20px;
+    font-size: 20px;
+    font-family: 'Press Start 2P', cursive; /* Fonte em estilo pixel */
+    background-color: white;
+    color: black;
+    border: none;
+    cursor: pointer;
 }
 
+#play-again2:hover, #exit-game2:hover {
+    background-color: rgb(241, 40, 36);
+}
 .hidden {
     display: none;
 }

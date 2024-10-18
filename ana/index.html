@@ -9,16 +9,25 @@
 </head>
 <body>
     <div id="game-container">
+        <audio id="gamewonsound" src="sons/mscgamewon.mp3"></audio>
+        <audio id="gameoversound" src="sons/mscgameover.mp3"></audio>
+        <audio id="ambientesound" src="sons/musicadefundo[.mp3"></audio>
+        <audio id="levelupsound" src="sons/levelup.mp3"></audio>
         <canvas id="gameCanvas"></canvas>
-        <div id="pontuacao"></div>
         <div id="vidas"></div>
         <div id="game_over" class="hidden">
             <h1>Game Over</h1>
             <button id="play-again">Play Again</button>
             <button id="exit-game">Exit</button>
         </div>
+        <div id="game_won" class="hidden">
+            <h1>Game Won</h1>
+            <h3>Parabéns!!</h3>
+            <button id="play-again2">Play Again</button>
+            <button id="exit-game2">Exit</button>
+        </div>
         <div id="fase1" class="hidden">
-            <h1>Parabéns! Você conseguiu passar da fase 1! agora vai ficar um pouco mais dificil</h1>
+            <h1>Parabéns! <p></p>Você conseguiu passar da fase 1! agora vai ficar um pouco mais dificil</h1>
         </div>
         <div id="fase2" class="hidden">
             <h1>Parabéns! Você conseguiu passar da fase 2! agora começa a diversão</h1>
