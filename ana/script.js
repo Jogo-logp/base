@@ -82,18 +82,7 @@ function contas(){
     
 }
 
-function telas (){
-    console.log(`Pontuação atual: ${pontuacao}`);
-    if(pontuacao==5){
-        telafase1()
-    }
-    //else if(pontuacao==10){
-       // telafase2()
-    //}
-    //else if(pontuacao==15){
-        //telafase3()
-    //}
-}
+
 
 function desenholevi() {  // função para desenhar o levi
     ctx.drawImage(levigif, levizao.x, levizao.y, levizao.width, levizao.height);
@@ -119,6 +108,7 @@ function desenhovidas() { // função para exibir as vidas do usuário com cora�
         vida.style.opacity = (i < v) ? '1' : '0.5'; 
         exibirvidas.appendChild(vida);
     }
+    
 }
 
 
@@ -205,7 +195,18 @@ function telafase1() {
     //}, 2000);
 
 //}
-
+function telas (){
+    console.log(`Pontuação atual: ${pontuacao}`);
+    if(pontuacao===5){
+        telafase1()
+    }
+    //else if(pontuacao==10){
+       // telafase2()
+    //}
+    //else if(pontuacao==15){
+        //telafase3()
+    //}
+}
 function telagameover() {
     gameover = true;
     exibirgameover.classList.remove('hidden');
@@ -253,10 +254,16 @@ function loopdogame() {
         if (ghost.y + ghost.height >= levizao.y && ghost.x < levizao.x + levizao.width) {
             resetarghost();
             respostaserradas++;
+            v--;
+            desenhovidas()
             if (respostaserradas >= totaldevida) { // Verifica se as vidas acabaram
                 telagameover();
             }
         }
+        if(pontuacao===2){
+            telafase1()
+        }
+
 
     } else {
         loopdojg = requestAnimationFrame(loopdogame);
