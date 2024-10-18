@@ -101,6 +101,10 @@ function playambientesound(){
     musicaambiente.play();
 }
 
+function pauseambientesound() {
+    musicaambiente.pause(); 
+}
+
 function playlevelupsound(){
     levelupsound.play();
 }
@@ -207,6 +211,7 @@ function telafase1() {
         exibirfase1.classList.add('hidden');
     }, 2000);
     playlevelupsound();
+    
 
 }
 
@@ -219,6 +224,7 @@ function telafase2() {
 }, 2000);
 playlevelupsound();
 
+
 }
 
 function telafase3() {
@@ -229,6 +235,7 @@ function telafase3() {
         exibirfase3.classList.add('hidden');
     }, 2000);
     playlevelupsound();
+    
 
 }
 function telas (){
@@ -249,6 +256,7 @@ function telagameover() {
     cancelAnimationFrame(loopdojg);
     exibirgameover.classList.remove('hidden');
     playgameoversound();
+    pauseambientesound();
 }
 
 function telagamewon() {
@@ -256,7 +264,7 @@ function telagamewon() {
     cancelAnimationFrame(loopdojg);
     exibirgamewon.classList.remove('hidden');
     playgamewonsound();
-
+    pauseambientesound();
 }
 
 function restart() { // reinicia o jogo
@@ -323,6 +331,7 @@ function loopdogame() {
 
     } else {
         loopdojg = requestAnimationFrame(loopdogame);
+        pauseambientesound();
     }
 }
 
@@ -355,11 +364,13 @@ document.getElementById('exit-game').addEventListener('click', function() {
     gameover = true;
     cancelAnimationFrame(loopdojg);
     document.getElementById('game-container').style.display = 'none';
+    pauseambientesound();
 });
 document.getElementById('exit-game2').addEventListener('click', function() {
     gameover = true;
     cancelAnimationFrame(loopdojg);
     document.getElementById('game-container').style.display = 'none';
+    pauseambientesound;
 });
 
 loopdogame();
