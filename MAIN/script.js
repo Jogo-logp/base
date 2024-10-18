@@ -280,6 +280,10 @@ function restart() { // reinicia o jogo
     resetarghost();
     desenhopontuacao();
     desenhovidas();
+    telafase1();
+    telafase2();
+    telafase3();
+    playambientesound();
     requestAnimationFrame(loopdogame);  // Iniciar o loop de animação do jogo
 }
 
