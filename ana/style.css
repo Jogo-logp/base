@@ -71,6 +71,45 @@ canvas {
     padding: 20px;
     border-radius: 10px;
 }
+#fase1 {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: rgb(11, 2, 2);
+    font-size: 8px;
+    font-family: 'Press Start 2P', cursive; /* Fonte em estilo pixel */
+    text-align: center;
+    padding: 20px;
+    border-radius: 10px;
+    display: none;
+}
+#fase2 {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: rgb(11, 2, 2);
+    font-size: 8px;
+    font-family: 'Press Start 2P', cursive; /* Fonte em estilo pixel */
+    text-align: center;
+    padding: 20px;
+    border-radius: 10px;
+    display: none;
+}
+#fase3 {
+    display: none;
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: rgb(11, 2, 2);
+    font-size: 8px;
+    font-family: 'Press Start 2P', cursive; /* Fonte em estilo pixel */
+    text-align: center;
+    padding: 20px;
+    border-radius: 10px;
+}
 
 #play-again, #exit-game {
     margin-top: 10px;

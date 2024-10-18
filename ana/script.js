@@ -5,6 +5,9 @@ const ctx = canvas.getContext('2d'); // contexto 2d do canvas, permite criar for
 const exibirpontuacao = document.getElementById('pontuacao'); // chama a pontuação do html (placar)
 const exibirvidas = document.getElementById('vidas'); // vidas do usuário (corações no canto superior esquerdo)
 const exibirgameover = document.getElementById('game_over'); // tela de game over
+const exibirfase1  = document.getElementById('fase1');
+//const exibirfase2  = document.getElementById('fase2');
+//const exibirfase3  = document.getElementById('fase3');
 const levigif = new Image ();
 levigif.src='imagens/levi1.gif'
 
@@ -17,9 +20,12 @@ canvas.height = 600; // configurações do tamanho da tela que vai rodar o jogo
 let pontuacao = 0; // placar(pontuação)
 let respostaserradas = 0; // contador de respostas erradas 
 let gameover = false; 
+let fase1= false;
+//let fase2= false;
+//let fase3= false;
 let loopdojg; // chama o loop do jogo
 let userinput = ""; // entrada do usuário
-const totaldevida = 5; // total de vidas
+let totaldevida = 5; // total de vidas
 
 const levizao = { // chamando a variável do levi e configurando ela
     x: canvas.width / 10,
@@ -32,20 +38,62 @@ const levizao = { // chamando a variável do levi e configurando ela
 
 
 const ghost = { // mesma coisa com o fantasma
-    x: canvas.width / 10 - 40,
-    y: -100,
+    x: 800,
+    y: 140,
     width: 80,
     height: 80,
     speed: 1,
     img: new Image(),
-    contademat: { //configurando a conta de matemática para somar 2 números aleatórios entre 0 e 10
-        num1: Math.floor(Math.random() * 11),
-        num2: Math.floor(Math.random() * 11),
-        respostacerta: null // Inicializa respostacerta
-    }
 };
 ghost.img.src = 'imagens/ghost.png'; // chamando a img do fantasma
-ghost.contademat.respostacerta = ghost.contademat.num1 + ghost.contademat.num2; // Calcula a resposta certa na inicialização
+
+let contademat={
+    num1:0,
+    num2:0,
+    respostacerta:0,
+    operacao:""
+};
+
+function contas(){
+    if (pontuacao <= 5) {
+        contademat.num1 = Math.floor(Math.random() * 11);
+        contademat.num2 = Math.floor(Math.random() * 11);
+        contademat.respostacerta = contademat.num1 + contademat.num2;
+        contademat.operacao ='+'
+        
+    } else if (pontuacao > 5 && pontuacao <= 10) {
+        contademat.num1 = Math.floor(Math.random() * 11);
+        contademat.num2 = Math.floor(Math.random() * 11);
+        contademat.respostacerta = contademat.num1 - contademat.num2;
+        contademat.operacao="-"
+    } else if (pontuacao > 10 && pontuacao <= 15) {
+        contademat.num1 = Math.floor(Math.random() * 11);
+        contademat.num2 = Math.floor(Math.random() * 11);
+        contademat.respostacerta = contademat.num1 * contademat.num2;
+        contademat.operacao="x"
+    } else if (pontuacao > 15) {
+        do {
+            contademat.num2 = Math.floor(Math.random() * 10) + 1; // Denominador não pode ser zero
+            contademat.num1 = contademat.num2 * Math.floor(Math.random() * 10); // Garante que o numerador seja divisível pelo denominador
+        } while (contademat.num2 === 0); // Evita divisão por zero
+        contademat.respostacerta = contademat.num1 / contademat.num2;
+        contademat.operacao=":"
+    }
+    
+}
+
+function telas (){
+    console.log(`Pontuação atual: ${pontuacao}`);
+    if(pontuacao==5){
+        telafase1()
+    }
+    //else if(pontuacao==10){
+       // telafase2()
+    //}
+    //else if(pontuacao==15){
+        //telafase3()
+    //}
+}
 
 function desenholevi() {  // função para desenhar o levi
     ctx.drawImage(levigif, levizao.x, levizao.y, levizao.width, levizao.height);
@@ -55,7 +103,7 @@ function desenhoghost() { // função para desenhar o fantasma e configurar a co
     ctx.drawImage(ghost.img, ghost.x, ghost.y, ghost.width, ghost.height);
     ctx.fillStyle = "white";
     ctx.font = "15px 'Press Start 2P'";
-    ctx.fillText(`${ghost.contademat.num1} + ${ghost.contademat.num2} = ?`, ghost.x + 10, ghost.y - 10);
+    ctx.fillText(`${contademat.num1} ${contademat.operacao} ${contademat.num2} = ?`, ghost.x + 10, ghost.y - 10);
 }
 
 function desenhopontuacao() { // função pra desenhar a pontuação do usuário
@@ -67,10 +115,12 @@ function desenhovidas() { // função para exibir as vidas do usuário com cora�
     for (let i = 0; i < totaldevida; i++) {  // iterando de 0 até o total de vidas (definido como 5) de 1 em 1.
         const vida = document.createElement('span');
         vida.textContent = '❤️';
-        vida.style.opacity = (i < respostaserradas) ? '0.5' : '1'; //se o i do for (que basicamente conta quantas rodadas o usuário jogou) for menor que a quantidade de respostas erradas, o coração ficará translúcido, indicando que o usuário perdeu uma vida, se não a opacidade continua a mesma coisa
+        // A opacidade deve ser 0.5 se o número de respostas erradas for maior ou igual ao número de vidas disponíveis
+        vida.style.opacity = (i < v) ? '1' : '0.5'; 
         exibirvidas.appendChild(vida);
     }
 }
+
 
 function desenhoinput() { // função para desenhar o que o usuário digita como resposta, para que fique mais intuitivo o que acontece no jogo
     ctx.fillStyle = "black"; 
@@ -78,40 +128,83 @@ function desenhoinput() { // função para desenhar o que o usuário digita como
     ctx.fillText(`Sua resposta: ${userinput}`, canvas.width / 2 - 100, 550); 
 }
 
+
 function resetarghost() { // função para resetar o ghost quando necessário
-    const lado = Math.random() < 0.5 ? 'horizontal' : 'vertical'; //define se o fantasma vai aparecer no eixo x ou y, a função math.random gera um n aleatório entre 0 e 1 e se o n for menor que 0.5 o lado será horizontal, caso contrário será vertical
-    if (lado === 'horizontal') { //condição para saber se o lado "sorteado" é horizontal
-        ghost.x = Math.random() * canvas.width;//se refere à posição horizontal do fantasma, se for verdadeiro, o fantasma iniciará fora da tela à esquerda, garantindo que ele não apareça no meio da tela. se não for verdadeiro, o fantasma vai começar fora da tela à direita
-        ghost.y = -canvas.height; //define aleatoriamente a posição do ghost em relação ao eixo y
-    } else { //se a condição anterior não for verdadeira (vertical) define outro eixo x e y para o fantasma
+    const lado = Math.random() *(1-0.5)+0.5; 
+       // ghost.x = Math.random() * canvas.width;
+        //ghost.y = -canvas.height; 
         ghost.x = canvas.width; // Pode começar em qualquer ponto no eixo x
         ghost.y = Math.random() *  canvas.height;
-    }
 
     // novo problema matemático
-    ghost.contademat.num1 = Math.floor(Math.random() * 10); //nv n aleatorio ate 10
-    ghost.contademat.num2 = Math.floor(Math.random() * 10);
-    ghost.contademat.respostacerta = ghost.contademat.num1 + ghost.contademat.num2;
+    contas()
+    
     userinput = ""; // Reseta a entrada do usuário
     ghost.speed = 1; // Garante que a velocidade seja resetada
 }
 
-
-function checarresposta() { // checa a resposta do usuário
+let acertosconsecutivos = 0;
+let v=totaldevida;
+function checarresposta() {
     const entradadousuario = parseInt(userinput, 10); 
-    if (entradadousuario === ghost.contademat.respostacerta) {
+    if (entradadousuario === contademat.respostacerta) {
         pontuacao++;
+        acertosconsecutivos++; // Incrementa os acertos consecutivos
+        
+        // Adiciona vida se houver mais de 10 acertos consecutivos
+        if (acertosconsecutivos > 10) {
+            if (v<totaldevida){
+                v++
+                acertosconsecutivos=0;
+            }
+        }
+        telas()        
         resetarghost(); 
-         //condição que verifica se a resposta está certa, se for verdadeiro aumenta a pontuação e reseta o ghost para uma nova conta aparecer
     } else {
         respostaserradas++;
+        acertosconsecutivos = 0; // Reseta os acertos consecutivos se errar
         if (respostaserradas >= totaldevida) {
             telagameover();
+        } else {
+            v--
         }
-         //se a resposta estiver errada, a quantidade de respostas erradas aumenta (usuário perde uma vida) e caso as vidas já tenham sido todas perdidas o jogo acaba
     }
+    
     userinput = ""; // Reseta a entrada do usuário após verificar
+    desenhovidas(); // Atualiza a visualização das vidas
+    console.log(`Acertos Consecutivos: ${acertosconsecutivos}, Total de Vidas: ${totaldevida}, Respostas Erradas: ${respostaserradas}`);
+
 }
+
+function telafase1() {
+    fase1 = true;
+    exibirfase1.classList.remove('hidden');
+    setTimeout(() => {
+        telafase1 = false;
+        exibirfase1.classList.add('hidden');
+    }, 2000);
+
+}
+
+//function telafase2() {
+   // fase2 = true;
+   // exibirfase2.classList.remove('hidden');
+   // setTimeout(() => {
+       // telafase2 = false;
+      //  exibirfase2.classList.add('hidden');
+  //  }, 2000);
+
+//}
+
+//function telafase3() {
+    //fase3 = true;
+    //exibirfase3.classList.remove('hidden');
+    //setTimeout(() => {
+        // = false;
+        //exibirfase3.classList.add('hidden');
+    //}, 2000);
+
+//}
 
 function telagameover() {
     gameover = true;
@@ -123,6 +216,7 @@ function telagameover() {
 function restart() { // reinicia o jogo
     pontuacao = 0;
     respostaserradas = 0;
+    v=totaldevida;
     gameover = false;
     exibirgameover.classList.add('hidden');
     document.getElementById('pontuacao').style.display = 'block';
@@ -132,9 +226,10 @@ function restart() { // reinicia o jogo
     desenhovidas();
     loopdogame();
 }
-levigif.onload =function(){
-    loopdogame()
-}
+
+
+contas();
+
 function loopdogame() {
     console.log("tafuncioando")
     loopdojg = requestAnimationFrame(loopdogame);
@@ -163,6 +258,8 @@ function loopdogame() {
             }
         }
 
+    } else {
+        loopdojg = requestAnimationFrame(loopdogame);
     }
 }
 
@@ -175,6 +272,9 @@ window.addEventListener("keydown", function(event) {
         }
     } else if (event.key === "Backspace") {
         userinput = userinput.slice(0, -1); // Remove o último caractere da entrada do usuário
+    }
+      else if (event.key === "-" && userinput.length === 0) {
+        userinput += event.key; // Permite que o usuário insira o sinal negativo 
     }
 });
 
