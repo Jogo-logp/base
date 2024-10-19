@@ -4,119 +4,201 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Levi Nightmare</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #0a0a0a;
-            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #C6CDEB;
+            color: #eaeaea;
             margin: 0;
             padding: 0;
-            overflow-y: auto;
-            min-height: 100vh;
-            box-sizing: border-box;
-        }
-
-        h1 {
-            font-size: 4em;
-            color: #ff3333;
-            text-shadow: 3px 3px 5px #000000;
-            margin-top: 30px;
             text-align: center;
-            font-family: 'Creepster', cursive;
         }
 
-        .container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            width: 90%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding-bottom: 50px;
-        }
-
-        .image-box {
+        header {
             background-color: #1a1a1a;
-            border: 2px solid #ff3333;
-            border-radius: 10px;
             padding: 20px;
-            width: 80%;
-            height: 250px;
-            transition: transform 0.3s ease-in-out;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.6);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
-        .image-box:hover {
-            transform: scale(1.05); 
+        header h1 {
+            margin: 0;
+            font-size: 40px;
+            color: #ff5733;
+            transition: all 0.3s ease-in-out;
+            font-style: Press 2p;
         }
 
-        .image-box img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 8px;
+        header h1:hover {
+            color: #ff7733;
+            letter-spacing: 2px;
         }
 
-        .text-box {
-            font-size: 26px;
-            line-height: 1.6;
-            color: #ffcc00;
+        .conteudo {
+            margin: 30px auto;
+            width: 90%;
+            max-width: 1000px;
+        }
+
+        .historia {
+            background-color: #202020;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+            text-align: left;
+            line-height: 1.8;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .historia:hover {
+            transform: scale(1.02);
+        }
+
+        .historia h2 {
+            color: #ff5733;
+            font-size: 30px;
+        }
+
+        .explicacao {
+            margin-top: 40px;
+            background-color: #202020;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+            text-align: left;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .explicacao:hover {
+            transform: scale(1.02);
+        }
+
+        .explicacao h2 {
+            color: #ff5733;
+            font-size: 30px;
+        }
+
+        .explicacao ul {
+            list-style-type: disc;
+            padding-left: 20px;
+        }
+
+        .explicacao ul li {
+            margin-bottom: 10px;
+        }
+
+        .carrossel {
+            margin-top: 50px;
             display: flex;
             align-items: center;
+            justify-content: center;
         }
 
-        .play-button {
-            background-color: #ff3333;
-            border: none;
-            color: white;
-            padding: 15px 30px;
-            font-size: 2em;
+        .carrossel img {
+            width: 600px;
+            height: 350px;
+            object-fit: cover;
             border-radius: 10px;
-            cursor: pointer;
-            margin: 50px auto;
-            display: block;
-            transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+            transition: transform 0.2s ease-in-out;
         }
 
-        .play-button:hover {
-            background-color: #ff6666;
-            transform: scale(1.1);
+        .carrossel img:hover {
+            transform: scale(1.05);
+        }
+
+        .carrossel button {
+            background-color: transparent;
+            border: none;
+            color: #ff5733;
+            font-size: 50px;
+            cursor: pointer;
+            margin: 0 20px;
+            transition: color 0.2s ease-in-out;
+        }
+
+        .carrossel button:hover {
+            color: #ff7733;
+        }
+
+        .botao-jogar {
+            background-color: #ff5733;
+            border: none;
+            padding: 15px 50px;
+            color: #fff;
+            font-size: 24px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 50px 0;
+            transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+        }
+
+        .botao-jogar:hover {
+            background-color: #ff7733;
+            transform: scale(1.05);
+        }
+
+        footer {
+            margin-top: 30px;
+            font-size: 14px;
+            color: #999;
         }
     </style>
 </head>
 <body>
-    <h1>Levi Nightmare</h1>
+    <header>
+        <h1>Levi Nightmare</h1>
+    </header>
 
-    <div class="container">
-        <div class="image-box">
-            <img src="imagem1.jpg" alt="Imagem 1">
-        </div>
-        <div class="text-box">
-            <p>Numa fatídica quinta-feira, Levi, um estudante de Desenvolvimento de Sistemas do IFSP-SPO, estava exausto por causa de sua semana corrida.</p>
-        </div>
-
-        <div class="image-box">
-            <img src="imagem2.jpg" alt="Imagem 2">
-        </div>
-        <div class="text-box">
-            <p>Ao chegar na aula de matemática, sentiu um peso sobre as costas e suas pálpebras começaram a fechar. Quando acordou, percebeu que não estava mais na sala de aula como a conhecia.</p>
+    <div class="conteudo">
+        <div class="historia">
+            <h2>História do Jogo</h2>
+            <p>Numa fatídica quinta-feira, Levi, um primeiranista de Desenvolvimento de Sistemas do IFSP-SPO, estava exausto por causa de sua semana corrida como estudante, atividades para entregar, trabalhos para fazer e provas e provas para estudar.</p>
+            <p>Sendo o garoto o amante de humanas e o malfeitor de exatas que é, ao chegar na aula de matemática, sentiu um peso sobre suas costas e uma força invisível abaixando suas pálpebras. Seus olhos davam longas piscadas, e sua mente se esvaía até que não conseguisse mais juntar forças para deixá-los abertos.</p>
+            <p>Após o que pareceram poucos segundos, Levi tomou consciência de que não ouvia o professor e de súbito despertou-se, ou era o que ele esperava. Ao olhar à sua volta, uma versão mais escura, mais sinistra e mais vazia da sala estava lá; não havia amigos, colegas e nem professor.</p>
+            <p>Antes que pudesse processar o que estava acontecendo, monstros o cercaram e começaram a atacá-lo, não de um jeito convencional, mas sim com o poder da matemática, seu PIOR PESADELO.</p>
+            <p>Ajude o Levi a sair de seu mundo dos sonhos e encerre o tormento que tenta ensiná-lo matemática básica e a não dormir durante a aula do professor Marcelo!</p>
         </div>
 
-        <div class="image-box">
-            <img src="imagem3.jpg" alt="Imagem 3">
+        <div class="explicacao">
+            <h2>Por que jogá-lo?</h2>
+            <ul>
+                <li><strong>Agilidade:</strong> Facilita cálculos rápidos no dia a dia, como ao fazer compras ou planejar gastos.</li>
+                <li><strong>Base para conceitos avançados:</strong> Uma boa compreensão das operações básicas é fundamental para aprender matemática mais complexa, como álgebra e geometria.</li>
+                <li><strong>Confiança:</strong> Aumenta a confiança ao lidar com números, tornando as pessoas mais confortáveis em situações que envolvem cálculos.</li>
+                <li><strong>Resolução de problemas:</strong> Ajuda na solução de problemas práticos e na tomada de decisões informadas.</li>
+                <li><strong>Memória:</strong> Fortalece a memória e a habilidade de raciocínio lógico.</li>
+            </ul>
         </div>
-        <div class="text-box">
-            <p>Uma versão sombria havia tomado o lugar, e ele estava cercado por monstros de matemática! Ajude Levi a escapar desse pesadelo e sobreviver aos desafios que o cercam!</p>
+
+        <div class="carrossel">
+            <button onclick="imagemAnterior()">&#10094;</button>
+            <img id="imagemJogo" src="imagem1.jpg" alt="Imagem do Jogo">
+            <button onclick="proximaImagem()">&#10095;</button>
         </div>
+
+        <button class="botao-jogar">Jogar</button>
     </div>
 
-    <button class="play-button" onclick="startGame()">PLAY</button>
+    <footer>
+        <p>&copy; 2024 Levi Nightmare. Todos os direitos reservados.</p>
+    </footer>
 
     <script>
-        function startGame() {
-            window.location.href = 'link_para_o_jogo.html'; 
+        let imagens = ['imagem1.jpg', 'imagem2.jpg', 'imagem3.jpg']; 
+        let indiceAtual = 0;
+
+        function proximaImagem() {
+            indiceAtual = (indiceAtual + 1) % imagens.length;
+            document.getElementById('imagemJogo').src = imagens[indiceAtual];
+        }
+
+        function imagemAnterior() {
+            indiceAtual = (indiceAtual - 1 + imagens.length) % imagens.length;
+            document.getElementById('imagemJogo').src = imagens[indiceAtual];
         }
     </script>
 </body>
