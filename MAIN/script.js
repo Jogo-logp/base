@@ -2,12 +2,17 @@ const canvas = document.getElementById('gameCanvas'); // chama a id do canvas do
 const ctx = canvas.getContext('2d'); // contexto 2d do canvas, permite criar formas, imagens e textos. ctx é abreviação de context e é usado para desenhar no canvas
 
 // elementos de interface abaixo
-const exibirpontuacao = document.getElementById('pontuacao'); // chama a pontuação do html (placar)
+
 const exibirvidas = document.getElementById('vidas'); // vidas do usuário (corações no canto superior esquerdo)
 const exibirgameover = document.getElementById('game_over'); // tela de game over
+const exibirgamewon = document.getElementById('game_won'); // tela de game won
 const exibirfase1  = document.getElementById('fase1');
-//const exibirfase2  = document.getElementById('fase2');
-//const exibirfase3  = document.getElementById('fase3');
+const exibirfase2  = document.getElementById('fase2');
+const exibirfase3  = document.getElementById('fase3');
+const gamewonsound =document.getElementById('gamewonsound');
+const gameoversound =document.getElementById('gameoversound');
+const musicaambiente =document.getElementById('ambientesound');
+const levelupsound = document.getElementById ('levelupsound')
 const levigif = new Image ();
 levigif.src='imagens/levi1.gif'
 
@@ -20,16 +25,17 @@ canvas.height = 600; // configurações do tamanho da tela que vai rodar o jogo
 let pontuacao = 0; // placar(pontuação)
 let respostaserradas = 0; // contador de respostas erradas 
 let gameover = false; 
+let gamewon =false;
 let fase1= false;
-//let fase2= false;
-//let fase3= false;
+let fase2= false;
+let fase3= false;
 let loopdojg; // chama o loop do jogo
 let userinput = ""; // entrada do usuário
 let totaldevida = 5; // total de vidas
 
 const levizao = { // chamando a variável do levi e configurando ela
-    x: canvas.width / 10,
-    y: canvas.height - 220,
+    x: canvas.width / 10 + 50,
+    y: canvas.height - 250,
     width: 150,
     height: 200,
     img: levigif
@@ -40,12 +46,13 @@ const levizao = { // chamando a variável do levi e configurando ela
 const ghost = { // mesma coisa com o fantasma
     x: 800,
     y: 140,
-    width: 80,
-    height: 80,
+    width: 120,
+    height: 100,
     speed: 1,
     img: new Image(),
 };
 ghost.img.src = 'imagens/ghost.png'; // chamando a img do fantasma
+ghost.img.transf
 
 let contademat={
     num1:0,
@@ -55,23 +62,23 @@ let contademat={
 };
 
 function contas(){
-    if (pontuacao <= 5) {
+    if (pontuacao <= 4) {
         contademat.num1 = Math.floor(Math.random() * 11);
         contademat.num2 = Math.floor(Math.random() * 11);
         contademat.respostacerta = contademat.num1 + contademat.num2;
         contademat.operacao ='+'
         
-    } else if (pontuacao > 5 && pontuacao <= 10) {
+    } else if (pontuacao > 4 && pontuacao <= 9) {
         contademat.num1 = Math.floor(Math.random() * 11);
         contademat.num2 = Math.floor(Math.random() * 11);
         contademat.respostacerta = contademat.num1 - contademat.num2;
         contademat.operacao="-"
-    } else if (pontuacao > 10 && pontuacao <= 15) {
+    } else if (pontuacao > 9 && pontuacao <= 14) {
         contademat.num1 = Math.floor(Math.random() * 11);
         contademat.num2 = Math.floor(Math.random() * 11);
         contademat.respostacerta = contademat.num1 * contademat.num2;
         contademat.operacao="x"
-    } else if (pontuacao > 15) {
+    } else if (pontuacao > 14) {
         do {
             contademat.num2 = Math.floor(Math.random() * 10) + 1; // Denominador não pode ser zero
             contademat.num1 = contademat.num2 * Math.floor(Math.random() * 10); // Garante que o numerador seja divisível pelo denominador
@@ -82,6 +89,25 @@ function contas(){
     
 }
 
+function playgamewonsound(){
+    gamewonsound.play();
+}
+
+function playgameoversound(){
+    gameoversound.play();
+}
+
+function playambientesound(){
+    musicaambiente.play();
+}
+
+function pauseambientesound() {
+    musicaambiente.pause(); 
+}
+
+function playlevelupsound(){
+    levelupsound.play();
+}
 
 
 function desenholevi() {  // função para desenhar o levi
@@ -90,13 +116,21 @@ function desenholevi() {  // função para desenhar o levi
 
 function desenhoghost() { // função para desenhar o fantasma e configurar a conta p aparecer acima dele
     ctx.drawImage(ghost.img, ghost.x, ghost.y, ghost.width, ghost.height);
-    ctx.fillStyle = "white";
+    ctx.fillStyle = "black";
+    ctx.lineWidth = 3; // espessura da borda
+    ctx.strokeStyle = "white";
     ctx.font = "15px 'Press Start 2P'";
+    ctx.strokeText(`${contademat.num1} ${contademat.operacao} ${contademat.num2} = ?`, ghost.x + 10, ghost.y - 10);
     ctx.fillText(`${contademat.num1} ${contademat.operacao} ${contademat.num2} = ?`, ghost.x + 10, ghost.y - 10);
 }
 
 function desenhopontuacao() { // função pra desenhar a pontuação do usuário
-    exibirpontuacao.textContent = `Pontuação: ${pontuacao}`;
+    ctx.fillStyle='rgb(241, 40, 36)';
+    ctx.lineWidth=3;
+    ctx.strokeStyle='black';
+    ctx.font ="20px 'Press Start 2P'";
+    ctx.strokeText(`Pontuação: ${pontuacao}`, canvas.width / 2 + 100, 50);
+    ctx.fillText(`Pontuação: ${pontuacao}`, canvas.width / 2 + 100, 50); 
 }
 
 function desenhovidas() { // função para exibir as vidas do usuário com corações
@@ -113,9 +147,12 @@ function desenhovidas() { // função para exibir as vidas do usuário com cora�
 
 
 function desenhoinput() { // função para desenhar o que o usuário digita como resposta, para que fique mais intuitivo o que acontece no jogo
-    ctx.fillStyle = "black"; 
+    ctx.fillStyle = "rgb(241, 40, 36)"; 
+    ctx.lineWidth= 1;
+    ctx.strokeStyle='black';
     ctx.font = "15px 'Press Start 2P'"; 
-    ctx.fillText(`Sua resposta: ${userinput}`, canvas.width / 2 - 100, 550); 
+    ctx.strokeText(`Sua resposta: ${userinput}`, canvas.width / 2 + 90, 590);
+    ctx.fillText(`Sua resposta: ${userinput}`, canvas.width / 2 + 90, 590); 
 }
 
 
@@ -173,28 +210,34 @@ function telafase1() {
         telafase1 = false;
         exibirfase1.classList.add('hidden');
     }, 2000);
+    playlevelupsound();
+    
 
 }
 
-//function telafase2() {
-   // fase2 = true;
-   // exibirfase2.classList.remove('hidden');
-   // setTimeout(() => {
-       // telafase2 = false;
-      //  exibirfase2.classList.add('hidden');
-  //  }, 2000);
+function telafase2() {
+   fase2 = true;
+   exibirfase2.classList.remove('hidden');
+   setTimeout(() => {
+    telafase2 = false;
+    exibirfase2.classList.add('hidden');
+}, 2000);
+playlevelupsound();
 
-//}
 
-//function telafase3() {
-    //fase3 = true;
-    //exibirfase3.classList.remove('hidden');
-    //setTimeout(() => {
-        // = false;
-        //exibirfase3.classList.add('hidden');
-    //}, 2000);
+}
 
-//}
+function telafase3() {
+    fase3 = true;
+    exibirfase3.classList.remove('hidden');
+    setTimeout(() => {
+        telafase3 = false;
+        exibirfase3.classList.add('hidden');
+    }, 2000);
+    playlevelupsound();
+    
+
+}
 function telas (){
     console.log(`Pontuação atual: ${pontuacao}`);
     if(pontuacao===5){
@@ -207,26 +250,43 @@ function telas (){
         //telafase3()
     //}
 }
+
 function telagameover() {
     gameover = true;
+    cancelAnimationFrame(loopdojg);
     exibirgameover.classList.remove('hidden');
-    document.getElementById('pontuacao').style.display = 'none';
-    document.getElementById('vidas').style.display = 'none';
+    playgameoversound();
+    pauseambientesound();
+}
+
+function telagamewon() {
+    gamewon = true;
+    cancelAnimationFrame(loopdojg);
+    exibirgamewon.classList.remove('hidden');
+    playgamewonsound();
+    pauseambientesound();
 }
 
 function restart() { // reinicia o jogo
     pontuacao = 0;
     respostaserradas = 0;
-    v=totaldevida;
+    v = totaldevida;
     gameover = false;
+    gamewon = false;
     exibirgameover.classList.add('hidden');
+    exibirgamewon.classList.add('hidden');
     document.getElementById('pontuacao').style.display = 'block';
     document.getElementById('vidas').style.display = 'block';
     resetarghost();
     desenhopontuacao();
     desenhovidas();
-    loopdogame();
+    telafase1();
+    telafase2();
+    telafase3();
+    playambientesound();
+    requestAnimationFrame(loopdogame);  // Iniciar o loop de animação do jogo
 }
+
 
 
 contas();
@@ -234,7 +294,8 @@ contas();
 function loopdogame() {
     console.log("tafuncioando")
     loopdojg = requestAnimationFrame(loopdogame);
-    if (!gameover) {
+    if (!gameover && !gamewon) {
+        playambientesound()
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         desenholevi();
         desenhoghost();
@@ -260,13 +321,21 @@ function loopdogame() {
                 telagameover();
             }
         }
-        if(pontuacao===2){
-            telafase1()
+        if(pontuacao===5){
+            telafase1();
+        } else if (pontuacao===10){
+            telafase2();
+        } else if (pontuacao ===15){
+            telafase3();
+        } else if (pontuacao>=20){
+            telagamewon()
         }
+
 
 
     } else {
         loopdojg = requestAnimationFrame(loopdogame);
+        pauseambientesound();
     }
 }
 
@@ -285,11 +354,27 @@ window.addEventListener("keydown", function(event) {
     }
 });
 
-document.getElementById('play-again').addEventListener('click', restart); // Reinicia o jogo quando clica em "Play Again"
+document.getElementById('play-again').addEventListener('click', function(){
+    gameover=false;
+    requestAnimationFrame(loopdogame);
+    restart();
+});
+document.getElementById('play-again2').addEventListener('click', function(){
+    gameover=false;
+    requestAnimationFrame(loopdogame);
+    restart();
+});
 document.getElementById('exit-game').addEventListener('click', function() {
     gameover = true;
     cancelAnimationFrame(loopdojg);
     document.getElementById('game-container').style.display = 'none';
+    pauseambientesound();
+});
+document.getElementById('exit-game2').addEventListener('click', function() {
+    gameover = true;
+    cancelAnimationFrame(loopdojg);
+    document.getElementById('game-container').style.display = 'none';
+    pauseambientesound;
 });
 
 loopdogame();
