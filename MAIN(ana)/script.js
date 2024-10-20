@@ -67,6 +67,7 @@ function contas(){
         contademat.num2 = Math.floor(Math.random() * 11);
         contademat.respostacerta = contademat.num1 + contademat.num2;
         contademat.operacao ='+'
+        fase=1
         
     } else if (pontuacao > 4 && pontuacao <= 9) {
         contademat.num1 = Math.floor(Math.random() * 11);
@@ -157,6 +158,7 @@ function desenhoinput() { // função para desenhar o que o usuário digita como
 
 
 function resetarghost() { // função para resetar o ghost quando necessário
+    contas()
     const lado = Math.random() *(1-0.5)+0.5; 
        // ghost.x = Math.random() * canvas.width;
         //ghost.y = -canvas.height; 
@@ -164,7 +166,6 @@ function resetarghost() { // função para resetar o ghost quando necessário
         ghost.y = Math.random() *  canvas.height;
 
     // novo problema matemático
-    contas()
     
     userinput = ""; // Reseta a entrada do usuário
     ghost.speed = 1; // Garante que a velocidade seja resetada
@@ -268,25 +269,28 @@ function telagamewon() {
 }
 
 function restart() { // reinicia o jogo
+    resetarghost();
     pontuacao = 0;
     respostaserradas = 0;
     v = totaldevida;
+    ghost.x= 800,
+    ghost.y= 140,
     gameover = false;
     gamewon = false;
     exibirgameover.classList.add('hidden');
     exibirgamewon.classList.add('hidden');
+    exibirfase1.classList.add('hidden');
+    exibirfase2.classList.add('hidden');
+    exibirfase3.classList.add('hidden');
     document.getElementById('pontuacao').style.display = 'block';
     document.getElementById('vidas').style.display = 'block';
-    resetarghost();
+    contas();
     desenhopontuacao();
     desenhovidas();
-    telafase1();
-    telafase2();
-    telafase3();
     playambientesound();
     requestAnimationFrame(loopdogame);  // Iniciar o loop de animação do jogo
 }
-
+//o restart nao esta voltando a fase de soma de primeira, arrumar isso***********
 
 
 contas();
