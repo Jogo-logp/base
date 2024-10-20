@@ -124,7 +124,6 @@ h3{
     font-family: 'Press Start 2P', cursive; /* Fonte em estilo pixel */
     text-align: center;
 }
-
 #play-again, #exit-game {
     margin-top: 10px;
     padding: 10px 20px;

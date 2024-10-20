@@ -12,7 +12,8 @@ const exibirfase3  = document.getElementById('fase3');
 const gamewonsound =document.getElementById('gamewonsound');
 const gameoversound =document.getElementById('gameoversound');
 const musicaambiente =document.getElementById('ambientesound');
-const levelupsound = document.getElementById ('levelupsound')
+const levelupsound = document.getElementById ('levelupsound');
+const introsound = document.getElementById ('introsound');
 const levigif = new Image ();
 levigif.src='imagens/levi1.gif'
 
@@ -109,6 +110,9 @@ function pauseambientesound() {
 function playlevelupsound(){
     levelupsound.play();
 }
+function playintrosound(){
+    introsound.play();
+}
 
 
 function desenholevi() {  // função para desenhar o levi
@@ -148,12 +152,12 @@ function desenhovidas() { // função para exibir as vidas do usuário com cora�
 
 
 function desenhoinput() { // função para desenhar o que o usuário digita como resposta, para que fique mais intuitivo o que acontece no jogo
-    ctx.fillStyle = "rgb(241, 40, 36)"; 
-    ctx.lineWidth= 1;
+    ctx.fillStyle = "white"; 
+    ctx.lineWidth= 4;
     ctx.strokeStyle='black';
-    ctx.font = "15px 'Press Start 2P'"; 
-    ctx.strokeText(`Sua resposta: ${userinput}`, canvas.width / 2 + 90, 590);
-    ctx.fillText(`Sua resposta: ${userinput}`, canvas.width / 2 + 90, 590); 
+    ctx.font = "20px 'Press Start 2P'"; 
+    ctx.strokeText(`${userinput}`,  380, 150);
+    ctx.fillText(`${userinput}`, 380, 150); 
 }
 
 
@@ -203,6 +207,16 @@ function checarresposta() {
     console.log(`Acertos Consecutivos: ${acertosconsecutivos}, Total de Vidas: ${totaldevida}, Respostas Erradas: ${respostaserradas}`);
 
 }
+
+function desenharTexto() {
+    ctx.fillStyle = 'white'; 
+    ctx.lineWidth= 4;
+    ctx.strokeStyle='black';
+    ctx.font = "10px 'Press Start 2P'"; 
+    ctx.strokeText('Pressione P para pausar e R para retornar', 30, 590);
+    ctx.fillText('Pressione P para pausar e R para retornar', 30, 590);
+}      
+
 
 function telafase1() {
     fase1 = true;
@@ -260,9 +274,17 @@ function telagameover() {
     pauseambientesound();
 }
 
+function voltaraojogo() {
+requestAnimationFrame(loopdogame);
+}
+function pararojogo(){
+    cancelAnimationFrame(loopdojg);
+    pauseambientesound();
+}
+
 function telagamewon() {
     gamewon = true;
-    cancelAnimationFrame(loopdojg);
+    pararojogo();
     exibirgamewon.classList.remove('hidden');
     playgamewonsound();
     pauseambientesound();
@@ -306,6 +328,7 @@ function loopdogame() {
         desenhopontuacao();
         desenhovidas();
         desenhoinput(); 
+        desenharTexto();
         const dx = levizao.x - ghost.x; // Diferença em x
         const dy = levizao.y - ghost.y; // Diferença em y
         const distance = Math.sqrt(dx * dx + dy * dy); // Distância até o Levi
@@ -355,14 +378,19 @@ window.addEventListener("keydown", function(event) {
     }
       else if (event.key === "-" && userinput.length === 0) {
         userinput += event.key; // Permite que o usuário insira o sinal negativo 
+    } else if (event.key === 'P' || event.key ==='p'){
+        pararojogo();
+    } else if (event.key == 'R'  || event.key ==='r'){
+        voltaraojogo();
     }
 });
 
 document.getElementById('play-again').addEventListener('click', function(){
     gameover=false;
     requestAnimationFrame(loopdogame);
-    restart();
+    voltaraojogo();
 });
+
 document.getElementById('play-again2').addEventListener('click', function(){
     gameover=false;
     requestAnimationFrame(loopdogame);
