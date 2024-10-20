@@ -1,0 +1,177 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap'); /* Fonte estilo pixel */
+        
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background-image: url(imagens/fundo2.webp);
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: white;
+}
+
+h1 {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 50px;
+    color: rgb(66, 63, 247);
+    text-align: left;
+    text-shadow: 3px 3px 5px black;
+    margin: 20px 0 0 40px;
+    position: relative;
+}
+
+.glitch-text {
+    position: relative;
+    display: inline-block;
+    /* A animação só é ativada quando o mouse está sobre o h1 */
+}
+
+h1:hover .glitch-text {
+    animation: glitch 1.5s infinite;
+}
+
+@keyframes glitch {
+    0% {
+        text-shadow: 3px 3px 5px black, -3px -3px 0px #ff0000, 3px 3px 0px #00ffff;
+        transform: translate(0, 0);
+    }
+    10% {
+        text-shadow: 6px -3px 5px black, -6px 3px 0px #ff0000, 3px -6px 0px #00ffff;
+        transform: translate(2px, -2px);
+    }
+    20% {
+        text-shadow: -3px 3px 5px black, 3px -3px 0px #ff0000, -6px 6px 0px #00ffff;
+        transform: translate(-2px, 2px);
+    }
+    30% {
+        text-shadow: 3px 3px 5px black, -3px 3px 0px #ff0000, 3px -3px 0px #00ffff;
+        transform: translate(0px, 0px);
+    }
+    40% {
+        text-shadow: -6px -6px 5px black, 6px 6px 0px #ff0000, -3px -6px 0px #00ffff;
+        transform: translate(2px, 1px);
+    }
+    50% {
+        text-shadow: 3px -3px 5px black, -6px 3px 0px #ff0000, 6px -3px 0px #00ffff;
+        transform: translate(-1px, -2px);
+    }
+    60% {
+        text-shadow: 3px 3px 5px black, -3px 6px 0px #ff0000, -6px 6px 0px #00ffff;
+        transform: translate(1px, 2px);
+    }
+    70% {
+        text-shadow: -3px -3px 5px black, 3px -3px 0px #ff0000, 6px -6px 0px #00ffff;
+        transform: translate(0px, 0px);
+    }
+    80% {
+        text-shadow: 6px 6px 5px black, -6px -6px 0px #ff0000, 3px -3px 0px #00ffff;
+        transform: translate(-1px, 1px);
+    }
+    90% {
+        text-shadow: -3px -3px 5px black, 3px 3px 0px #ff0000, -6px 6px 0px #00ffff;
+        transform: translate(2px, -1px);
+    }
+    100% {
+        text-shadow: 3px 3px 5px black, -3px -3px 0px #ff0000, 3px 3px 0px #00ffff;
+        transform: translate(0, 0);
+    }
+}
+
+
+.container {
+    display: flex;
+    justify-content: flex-start; /* Alinhamento à esquerda */
+    align-items: center;
+    max-width: 1200px;
+    margin: 50px auto;
+    padding: 20px;
+}
+
+#levi-image {
+    width: 600px; /* Aumentado para cima e para baixo */
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.7);
+}
+
+#levi-image:hover{
+    transform: scale(1.1);
+}
+.story {
+    flex: 1;
+    margin-left: 80px;
+    background: rgba(0, 0, 0, 0.6); /* Fundo transparente para o texto */
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.story p {
+    font-size: 18px;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.carousel {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.arrow {
+    font-size: 40px;
+    color: rgb(66, 63, 247);
+    cursor: pointer;
+    margin: 0 20px;
+}
+
+@keyframes play-button {
+    0% {
+        transform: translate(0);
+    }
+    20% {
+        transform: translate(-2px, 2px);
+    }
+    40% {
+        transform: translate(-2px, -2px);
+    }
+    60% {
+        transform: translate(2px, 2px);
+    }
+    80% {
+        transform: translate(2px, -2px);
+    }
+    100% {
+        transform: translate(0);
+    }
+}
+
+.play-button {
+    display: inline-block;
+    background-color: rgb(66, 63, 247);
+    color: white;
+    padding: 20px 40px;
+    font-size: 20px;
+    font-family: 'Press Start 2P', cursive; /* Fonte pixelada */
+    cursor: pointer;
+    text-transform: uppercase;
+    border-radius: 10px;
+    margin-top: 30px;
+    transition: background-color 0.3s, transform 0.3s;
+    text-shadow: 2px 2px 4px black;
+    letter-spacing: 1px;
+    border: 3px solid darkred; /* Borda para estilo pixelizado */
+}
+
+.play-button:hover {
+    background-color: darkred;
+    transform: scale(1.05); /* Leve aumento no hover */
+    animation: glitch 0.5s infinite; /* Adiciona o efeito de glitch no hover */
+}
+
+
+/* Estilização do carrossel abaixo do texto */
+.carousel {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+}
