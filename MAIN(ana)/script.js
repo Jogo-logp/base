@@ -388,7 +388,7 @@ window.addEventListener("keydown", function(event) {
 document.getElementById('play-again').addEventListener('click', function(){
     gameover=false;
     requestAnimationFrame(loopdogame);
-    voltaraojogo();
+    restart();
 });
 
 document.getElementById('play-again2').addEventListener('click', function(){
