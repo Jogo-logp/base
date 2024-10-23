@@ -6,6 +6,7 @@ const ctx = canvas.getContext('2d'); // contexto 2d do canvas, permite criar for
 const exibirvidas = document.getElementById('vidas'); // vidas do usuário (corações no canto superior esquerdo)
 const exibirgameover = document.getElementById('game_over'); // tela de game over
 const exibirgamewon = document.getElementById('game_won'); // tela de game won
+const exibirinstrucoes=document.getElementById('instrucoes');
 const exibirfase1  = document.getElementById('fase1');
 const exibirfase2  = document.getElementById('fase2');
 const exibirfase3  = document.getElementById('fase3');
@@ -14,6 +15,7 @@ const gameoversound =document.getElementById('gameoversound');
 const musicaambiente =document.getElementById('ambientesound');
 const levelupsound = document.getElementById ('levelupsound');
 const introsound = document.getElementById ('introsound');
+const play=document.getElementById('play')
 const levigif = new Image ();
 levigif.src='imagens/levi1.gif'
 
@@ -27,6 +29,7 @@ let pontuacao = 0; // placar(pontuação)
 let respostaserradas = 0; // contador de respostas erradas 
 let gameover = false; 
 let gamewon =false;
+let instrucoes=true;
 let fase1= false;
 let fase2= false;
 let fase3= false;
@@ -68,7 +71,6 @@ function contas(){
         contademat.num2 = Math.floor(Math.random() * 11);
         contademat.respostacerta = contademat.num1 + contademat.num2;
         contademat.operacao ='+'
-        fase=1
         
     } else if (pontuacao > 4 && pontuacao <= 9) {
         contademat.num1 = Math.floor(Math.random() * 11);
@@ -274,6 +276,19 @@ function telagameover() {
     pauseambientesound();
 }
 
+document.getElementById('play').addEventListener('click', function(){
+    instrucoes=false;
+    gameover=false;
+    exibirinstrucoes.classList.add('hidden');
+    requestAnimationFrame(loopdogame);
+})
+
+function telainstrucoes() {
+    instrucoes = true;
+    exibirinstrucoes.classList.remove('hidden');
+    pauseambientesound();
+}
+
 function voltaraojogo() {
 requestAnimationFrame(loopdogame);
 }
@@ -301,6 +316,7 @@ function restart() { // reinicia o jogo
     gamewon = false;
     exibirgameover.classList.add('hidden');
     exibirgamewon.classList.add('hidden');
+    exibirinstrucoes.classList.add('hidden');
     exibirfase1.classList.add('hidden');
     exibirfase2.classList.add('hidden');
     exibirfase3.classList.add('hidden');
@@ -313,58 +329,63 @@ function restart() { // reinicia o jogo
     requestAnimationFrame(loopdogame);  // Iniciar o loop de animação do jogo
 }
 //o restart nao esta voltando a fase de soma de primeira, arrumar isso***********
-
-
+telainstrucoes();
 contas();
-
 function loopdogame() {
-    console.log("tafuncioando")
-    loopdojg = requestAnimationFrame(loopdogame);
-    if (!gameover && !gamewon) {
-        playambientesound()
+    if (!gameover && !gamewon && !instrucoes) {
+        loopdojg = requestAnimationFrame(loopdogame);  // Continua o loop
+
+        playambientesound();
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+
         desenholevi();
         desenhoghost();
         desenhopontuacao();
         desenhovidas();
         desenhoinput(); 
         desenharTexto();
-        const dx = levizao.x - ghost.x; // Diferença em x
-        const dy = levizao.y - ghost.y; // Diferença em y
-        const distance = Math.sqrt(dx * dx + dy * dy); // Distância até o Levi
 
-        if (distance > 0) { // Verifica se o fantasma não está exatamente em cima do Levi
-            ghost.x += (dx / distance) * ghost.speed; // Atualiza a posição em x
-            ghost.y += (dy / distance) * ghost.speed; // Atualiza a posição em y
+        const dx = levizao.x - ghost.x;  // Diferença em x
+        const dy = levizao.y - ghost.y;  // Diferença em y
+        const distance = Math.sqrt(dx * dx + dy * dy);  // Distância até o Levi
+
+        if (distance > 0) {  // Verifica se o fantasma não está exatamente em cima do Levi
+            ghost.x += (dx / distance) * ghost.speed;  // Atualiza a posição em x
+            ghost.y += (dy / distance) * ghost.speed;  // Atualiza a posição em y
         }
 
         // Checa se o fantasma chegou ao Levi
         if (ghost.y + ghost.height >= levizao.y && ghost.x < levizao.x + levizao.width) {
-            resetarghost();
-            respostaserradas++;
-            v--;
-            desenhovidas()
-            if (respostaserradas >= totaldevida) { // Verifica se as vidas acabaram
-                telagameover();
+            resetarghost();  // Reseta a posição do fantasma
+            respostaserradas++;  // Incrementa respostas erradas
+            v--;  // Reduz as vidas
+
+            desenhovidas();  // Atualiza as vidas na tela
+
+            if (respostaserradas >= totaldevida) {  // Verifica se as vidas acabaram
+                telagameover();  // Chama a tela de "Game Over"
+                return;  // Sai do loop para evitar o loop continuo
             }
         }
-        if(pontuacao===5){
+
+        // Verifica a pontuação para mudança de fase ou vitória
+        if (pontuacao === 5) {
             telafase1();
-        } else if (pontuacao===10){
+        } else if (pontuacao === 10) {
             telafase2();
-        } else if (pontuacao ===15){
+        } else if (pontuacao === 15) {
             telafase3();
-        } else if (pontuacao>=20){
-            telagamewon()
+        } else if (pontuacao >= 20) {
+            telagamewon();
+            return;  // Sai do loop para evitar continuação após vitória
         }
 
-
-
     } else {
-        loopdojg = requestAnimationFrame(loopdogame);
+        // Pause o som e não chame `requestAnimationFrame` aqui
         pauseambientesound();
     }
 }
+
 
 window.addEventListener("keydown", function(event) {
     if (!gameover && event.key >= 0 && event.key <= 9) {
@@ -408,5 +429,7 @@ document.getElementById('exit-game2').addEventListener('click', function() {
     document.getElementById('game-container').style.display = 'none';
     pauseambientesound;
 });
+
+
 
 loopdogame();
