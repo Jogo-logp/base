@@ -16,8 +16,7 @@ const musicaambiente =document.getElementById('ambientesound');
 const levelupsound = document.getElementById ('levelupsound');
 const introsound = document.getElementById ('introsound');
 const play=document.getElementById('play')
-const levigif = new Image ();
-levigif.src='imagens/levi1.gif'
+
 
 
 
@@ -36,18 +35,61 @@ let fase3= false;
 let loopdojg; // chama o loop do jogo
 let userinput = ""; // entrada do usuário
 let totaldevida = 5; // total de vidas
+let animacaoatual="normal";
+let frameatual=0;
+let framerodado=0;
+let framefast=25;
+let framecontagem= 0;
 
-const levizao = { // chamando a variável do levi e configurando ela
+
+const animacoes = {
+    normal:{ frames:[], totalframes: 3},
+    dano:{frames:[],totalframes:5},
+    ataque:{frames:[], totalframes:4},
+    over:{frames:[], totalframes:3}
+}
+const levizao={
     x: canvas.width / 10 + 50,
     y: canvas.height - 250,
     width: 150,
     height: 200,
-    img: levigif
 };
 
+for (const animacao in animacoes){
+    for (let i=0; i<animacoes[animacao].totalframes;i++){
+        const levizao={
+            x: canvas.width / 10 + 50,
+            y: canvas.height - 250,
+            width: 150,
+            height: 200,
+            img: new Image()
+        };
+        levizao.img.src=`imagens/${animacao}${i}.png`;
+        //animacoes[animacao].frame.Push(levizao);
+        if (animacoes[animacao].frames) {
+            animacoes[animacao].frames.push(levizao); // Use 'frames' consistently
+        } else {
+            console.error(`frames de ${animacao} nao tao definidos.`);
+        }
+
+        levizao.img.onload=function(){
+            framerodado++;
+            if(framerodado==Object.values(animacao).reduce((sum,anim)=>sum+anim.totalframes,0)){
+                console.log("imagens rodando animacao comecando");
+                animar();
+            }
+        };
+        
+        levizao.img.onerror = function (){
+            console.error('falha ao carregar imagem: imagens/${animacao}${i}.png');
+        };
+        
+    }
+}
 
 
-const ghost = { // mesma coisa com o fantasma
+
+const ghost = { // mesma coisa com o fantasma levigif
     x: 800,
     y: 140,
     width: 120,
@@ -117,8 +159,20 @@ function playintrosound(){
 }
 
 
-function desenholevi() {  // função para desenhar o levi
-    ctx.drawImage(levigif, levizao.x, levizao.y, levizao.width, levizao.height);
+function desenhoframe() {  // função para desenhar o levi levigif
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(
+        animacoes[animacaoatual].frames[frameatual].img,
+        animacoes[animacaoatual].frames[frameatual].x,
+        animacoes[animacaoatual].frames[frameatual].y,
+        animacoes[animacaoatual].frames[frameatual].width,
+        animacoes[animacaoatual].frames[frameatual].height
+    );
+    framecontagem++;
+    if(framecontagem>=framefast){
+        frameatual=(frameatual+1)%animacoes[animacaoatual].totalframes;
+        framecontagem=0;
+    }
 }
 
 function desenhoghost() { // função para desenhar o fantasma e configurar a conta p aparecer acima dele
@@ -187,6 +241,7 @@ function checarresposta() {
         
         // Adiciona vida se houver mais de 10 acertos consecutivos
         if (acertosconsecutivos > 10) {
+            trocaranimacao("ataque");
             if (v<totaldevida){
                 v++
                 acertosconsecutivos=0;
@@ -196,6 +251,7 @@ function checarresposta() {
         resetarghost(); 
     } else {
         respostaserradas++;
+        trocaranimacao("over");
         acertosconsecutivos = 0; // Reseta os acertos consecutivos se errar
         if (respostaserradas >= totaldevida) {
             telagameover();
@@ -219,6 +275,17 @@ function desenharTexto() {
     ctx.fillText('Pressione P para pausar e R para retornar', 30, 590);
 }      
 
+function animar(){
+    desenhoframe();
+    requestAnimationFrame(animar);
+}
+
+function trocaranimacao(tipodeanimacao){
+    if(animacoes[tipodeanimacao]){
+        animacaoatual=tipodeanimacao;
+        frameatual=0;
+    }
+}
 
 function telafase1() {
     fase1 = true;
@@ -269,6 +336,7 @@ function telas (){
 }
 
 function telagameover() {
+    trocaranimacao("dano");
     gameover = true;
     cancelAnimationFrame(loopdojg);
     exibirgameover.classList.remove('hidden');
@@ -285,7 +353,7 @@ document.getElementById('play').addEventListener('click', function(){
 
 function telainstrucoes() {
     instrucoes = true;
-    exibirinstrucoes.classList.remove('hidden');
+    exibirinstrucoes.classList.remove('hidden'); //push
     pauseambientesound();
 }
 
@@ -298,6 +366,7 @@ function pararojogo(){
 }
 
 function telagamewon() {
+    trocaranimacao("ataque");
     gamewon = true;
     pararojogo();
     exibirgamewon.classList.remove('hidden');
@@ -306,6 +375,7 @@ function telagamewon() {
 }
 
 function restart() { // reinicia o jogo
+    trocaranimacao("normal")
     resetarghost();
     pontuacao = 0;
     respostaserradas = 0;
@@ -328,7 +398,7 @@ function restart() { // reinicia o jogo
     playambientesound();
     requestAnimationFrame(loopdogame);  // Iniciar o loop de animação do jogo
 }
-//o restart nao esta voltando a fase de soma de primeira, arrumar isso***********
+
 telainstrucoes();
 contas();
 function loopdogame() {
@@ -338,7 +408,7 @@ function loopdogame() {
         playambientesound();
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        desenholevi();
+        desenhoframe();
         desenhoghost();
         desenhopontuacao();
         desenhovidas();
