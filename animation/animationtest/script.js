@@ -40,7 +40,42 @@ let frameatual=0;
 let framerodado=0;
 let framefast=25;
 let framecontagem= 0;
+let isOverAnimationActive = false; // Track if the "over" animation is active
+let overAnimationDuration = 1000; // Duration for the "over" animation in milliseconds
+let animationStartTime; // Track the start time of the animation
 
+function startOverAnimation() {
+    isOverAnimationActive = true; // Activate the over animation
+    levizao.frameIndex = 0; // Start from the first frame of the over animation
+
+    // Set a timer to deactivate the over animation after a set duration
+    setTimeout(() => {
+        isOverAnimationActive = false; // Deactivate the over animation
+        levizao.frameIndex = 0; // Reset to the first frame of the normal animation
+    }, 1000); // Adjust the duration as needed (1000 ms = 1 second)
+}
+
+
+function updateLeviAnimation() {
+    if (isOverAnimationActive) {
+        // Logic for the "over" animation
+        // Assuming you have a defined way to get the frame count for "over"
+        levizao.frameIndex = (levizao.frameIndex + 1) % animacoes.over.totalframes; // Loop through the over frames
+    } else {
+        // Logic for the normal animation
+        levizao.frameIndex = (levizao.frameIndex + 1) % animacoes.normal.totalframes; // Loop through normal frames
+    }
+}
+
+function checkOverAnimation() {
+    if (isOverAnimationActive) {
+        // Check how long the animation has been running
+        if (Date.now() - animationStartTime > overAnimationDuration) {
+            isOverAnimationActive = false; // Reset the animation status
+            trocaranimacao("normal"); // Switch back to normal animation
+        }
+    }
+}
 
 const animacoes = {
     normal:{ frames:[], totalframes: 3},
@@ -53,6 +88,8 @@ const levizao={
     y: canvas.height - 250,
     width: 150,
     height: 200,
+    img: new Image(),
+    frameIndex: 0 
 };
 
 for (const animacao in animacoes){
@@ -162,11 +199,15 @@ function playintrosound(){
 function desenhoframe() {  // função para desenhar o levi levigif
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(
-        animacoes[animacaoatual].frames[frameatual].img,
-        animacoes[animacaoatual].frames[frameatual].x,
-        animacoes[animacaoatual].frames[frameatual].y,
-        animacoes[animacaoatual].frames[frameatual].width,
-        animacoes[animacaoatual].frames[frameatual].height
+        levizao.img,
+        levizao.frameIndex * levizao.width, // Assuming the width of each frame is the same
+        0,
+        levizao.width,
+        levizao.height,
+        levizao.x,
+        levizao.y,
+        levizao.width,
+        levizao.height
     );
     framecontagem++;
     if(framecontagem>=framefast){
@@ -408,7 +449,26 @@ function loopdogame() {
         playambientesound();
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+        checkOverAnimation(); // Check if the "over" animation should end
+
+        updateLeviAnimation();
         desenhoframe();
+
+
+        // Check if the ghost reaches Levi
+        if (ghost.y + ghost.height >= levizao.y && ghost.x < levizao.x + levizao.width) {
+            respostaserradas++;
+            startOverAnimation(); // Start the "over" animation when Levi is caught
+            acertosconsecutivos = 0; // Reset consecutive hits
+
+            v--; // Reduce lives
+            desenhovidas(); // Update lives on screen
+
+            if (respostaserradas >= totaldevida) { // Check if lives have run out
+                telagameover(); // Call the game over screen
+                return; // Exit the loop to prevent continuation
+            }
+        }
         desenhoghost();
         desenhopontuacao();
         desenhovidas();

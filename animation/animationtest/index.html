@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Levis's Nightmare</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="game-container">
+        <audio id="gamewonsound" src="sons/mscgamewon.mp3"></audio>
+        <audio id="gameoversound" src="sons/mscgameover.mp3"></audio>
+        <audio id="ambientesound" src="sons/musicadefundo[.mp3"></audio>
+        <audio id="levelupsound" src="sons/levelup.mp3"></audio>
+        <audio id="introsound" src="sons/beginingsound.mp3"></audio>
+        <canvas id="gameCanvas"></canvas>
+        <div id="vidas"></div>
+        <div id="game_over" class="hidden">
+            <h1>Game Over</h1>
+            <button id="play-again">Play Again</button>
+            <button id="exit-game">Exit</button>
+        </div>
+        <div id="game_won" class="hidden">
+            <h1>Game Won</h1>
+            <h3>Parabéns!!</h3>
+            <button id="play-again2">Play Again</button>
+            <button id="exit-game2">Exit</button>
+        </div>
+        <div id="instrucoes" class="hidden">
+            <h1>Instruções</h1>
+            <ul id="instrucoes2">
+                <li>Resolva os calculos antes do fantasma alcançar o Levi <br><br>
+                <li>Dê enter quando estiver pronto para computar a resposta <br><br>
+                <li>Ao responder errado ou fora do tempo, você perde uma vida <br><br>
+                <li>Faça 10 acertos consecutivos para ganhar uma vida de volta <br><br>
+                <li>Passe os 4 niveis e liberte o Levi.</ul>
+            <button id="play">Play game</button>
+            <a href="../edu/index.html" target="_blank"><button id="site">Saiba mais</button></a>
+        </div>
+        <div id="fase1" class="hidden">
+            <h1>Parabéns! <p></p>Você conseguiu passar da fase 1! agora vai ficar um pouco mais dificil</h1>
+        </div>
+        <div id="fase2" class="hidden">
+            <h1>Parabéns! Você conseguiu passar da fase 2! agora começa a diversão</h1>
+        </div>
+        <div id="fase3" class="hidden">
+            <h1>Incrivel! Você conseguiu passar da fase 3! falta só um pouco para libertar o Levi</h1>
+        </div>
+        <img id="levigif" src="imagens/levi1.gif" alt="levigif" style="display: none;" >
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
