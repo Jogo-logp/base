@@ -40,42 +40,7 @@ let frameatual=0;
 let framerodado=0;
 let framefast=25;
 let framecontagem= 0;
-let isOverAnimationActive = false; // Track if the "over" animation is active
-let overAnimationDuration = 1000; // Duration for the "over" animation in milliseconds
-let animationStartTime; // Track the start time of the animation
 
-function startOverAnimation() {
-    isOverAnimationActive = true; // Activate the over animation
-    levizao.frameIndex = 0; // Start from the first frame of the over animation
-
-    // Set a timer to deactivate the over animation after a set duration
-    setTimeout(() => {
-        isOverAnimationActive = false; // Deactivate the over animation
-        levizao.frameIndex = 0; // Reset to the first frame of the normal animation
-    }, 1000); // Adjust the duration as needed (1000 ms = 1 second)
-}
-
-
-function updateLeviAnimation() {
-    if (isOverAnimationActive) {
-        // Logic for the "over" animation
-        // Assuming you have a defined way to get the frame count for "over"
-        levizao.frameIndex = (levizao.frameIndex + 1) % animacoes.over.totalframes; // Loop through the over frames
-    } else {
-        // Logic for the normal animation
-        levizao.frameIndex = (levizao.frameIndex + 1) % animacoes.normal.totalframes; // Loop through normal frames
-    }
-}
-
-function checkOverAnimation() {
-    if (isOverAnimationActive) {
-        // Check how long the animation has been running
-        if (Date.now() - animationStartTime > overAnimationDuration) {
-            isOverAnimationActive = false; // Reset the animation status
-            trocaranimacao("normal"); // Switch back to normal animation
-        }
-    }
-}
 
 const animacoes = {
     normal:{ frames:[], totalframes: 3},
@@ -85,20 +50,18 @@ const animacoes = {
 }
 const levizao={
     x: canvas.width / 10 + 50,
-    y: canvas.height - 250,
-    width: 150,
-    height: 200,
-    img: new Image(),
-    frameIndex: 0 
+    y: canvas.height - 300,
+    width: 200,
+    height: 250,
 };
 
 for (const animacao in animacoes){
     for (let i=0; i<animacoes[animacao].totalframes;i++){
         const levizao={
             x: canvas.width / 10 + 50,
-            y: canvas.height - 250,
-            width: 150,
-            height: 200,
+            y: canvas.height - 300,
+            width: 200,
+            height: 250,
             img: new Image()
         };
         levizao.img.src=`imagens/${animacao}${i}.png`;
@@ -129,8 +92,8 @@ for (const animacao in animacoes){
 const ghost = { // mesma coisa com o fantasma levigif
     x: 800,
     y: 140,
-    width: 120,
-    height: 100,
+    width: 180,
+    height: 160,
     speed: 1,
     img: new Image(),
 };
@@ -198,17 +161,15 @@ function playintrosound(){
 
 function desenhoframe() {  // função para desenhar o levi levigif
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(
-        levizao.img,
-        levizao.frameIndex * levizao.width, // Assuming the width of each frame is the same
-        0,
-        levizao.width,
-        levizao.height,
-        levizao.x,
-        levizao.y,
-        levizao.width,
-        levizao.height
-    );
+    const frame = animacoes[animacaoatual].frames[frameatual];
+    ctx.drawImage(frame.img, frame.x, frame.y, frame.width, frame.height);
+    //ctx.drawImage(
+        //animacoes[animacaoatual].frames[frameatual].img,
+        //animacoes[animacaoatual].frames[frameatual].x,
+        //animacoes[animacaoatual].frames[frameatual].y,
+        //animacoes[animacaoatual].frames[frameatual].width,
+        //animacoes[animacaoatual].frames[frameatual].height
+    //);
     framecontagem++;
     if(framecontagem>=framefast){
         frameatual=(frameatual+1)%animacoes[animacaoatual].totalframes;
@@ -282,22 +243,26 @@ function checarresposta() {
         
         // Adiciona vida se houver mais de 10 acertos consecutivos
         if (acertosconsecutivos > 10) {
-            trocaranimacao("ataque");
             if (v<totaldevida){
                 v++
                 acertosconsecutivos=0;
             }
+        } else if (pontuacao>18){
+            trocaranimacao("ataque", 5000);
         }
         telas()        
         resetarghost(); 
     } else {
         respostaserradas++;
-        trocaranimacao("over");
+        trocaranimacao("over", 2000);
         acertosconsecutivos = 0; // Reseta os acertos consecutivos se errar
         if (respostaserradas >= totaldevida) {
             telagameover();
-        } else {
+        } 
+        else {
             v--
+        } if (v<2){
+            trocaranimacao("dano", 5000);
         }
     }
     
@@ -321,12 +286,24 @@ function animar(){
     requestAnimationFrame(animar);
 }
 
-function trocaranimacao(tipodeanimacao){
-    if(animacoes[tipodeanimacao]){
-        animacaoatual=tipodeanimacao;
-        frameatual=0;
+function trocaranimacao(tipodeanimacao, tempoExibicao) {
+    if (animacoes[tipodeanimacao]) {
+        animacaoatual = tipodeanimacao;
+        frameatual = 0;
+
+        // Apenas define o temporizador para "over", "dano" ou "won"
+        if (tipodeanimacao === 'over' || tipodeanimacao === 'dano' || tipodeanimacao === 'won') {
+            setTimeout(() => {
+                animacaoatual = 'normal'; // Retorna para a animação "normal"
+                frameatual = 0;
+                console.log(`Animação "${tipodeanimacao}" interrompida. Voltando para "normal".`);
+            }, tempoExibicao); // tempoExibicao em milissegundos
+        }
+    } else {
+        console.error("Tipo de animação não encontrado:", tipodeanimacao);
     }
 }
+
 
 function telafase1() {
     fase1 = true;
@@ -377,7 +354,6 @@ function telas (){
 }
 
 function telagameover() {
-    trocaranimacao("dano");
     gameover = true;
     cancelAnimationFrame(loopdojg);
     exibirgameover.classList.remove('hidden');
@@ -407,7 +383,6 @@ function pararojogo(){
 }
 
 function telagamewon() {
-    trocaranimacao("ataque");
     gamewon = true;
     pararojogo();
     exibirgamewon.classList.remove('hidden');
@@ -449,26 +424,7 @@ function loopdogame() {
         playambientesound();
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        checkOverAnimation(); // Check if the "over" animation should end
-
-        updateLeviAnimation();
         desenhoframe();
-
-
-        // Check if the ghost reaches Levi
-        if (ghost.y + ghost.height >= levizao.y && ghost.x < levizao.x + levizao.width) {
-            respostaserradas++;
-            startOverAnimation(); // Start the "over" animation when Levi is caught
-            acertosconsecutivos = 0; // Reset consecutive hits
-
-            v--; // Reduce lives
-            desenhovidas(); // Update lives on screen
-
-            if (respostaserradas >= totaldevida) { // Check if lives have run out
-                telagameover(); // Call the game over screen
-                return; // Exit the loop to prevent continuation
-            }
-        }
         desenhoghost();
         desenhopontuacao();
         desenhovidas();
@@ -486,6 +442,7 @@ function loopdogame() {
 
         // Checa se o fantasma chegou ao Levi
         if (ghost.y + ghost.height >= levizao.y && ghost.x < levizao.x + levizao.width) {
+            trocaranimacao("over", 2000)
             resetarghost();  // Reseta a posição do fantasma
             respostaserradas++;  // Incrementa respostas erradas
             v--;  // Reduz as vidas
