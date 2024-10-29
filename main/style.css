@@ -29,7 +29,7 @@ body, html {
 
 canvas {
     border: 2px solid white;
-    background-image: url(imagens/sala_de_aula.webp);
+    background-image: url(imagens/sala_de_aula.jpg);
     background-repeat: no-repeat;
     background-size: cover;
     display: block;
