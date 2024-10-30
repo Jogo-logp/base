@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Levi Nightmare</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="icon" type="image/ico" href="imagens/favicon.ico">
 </head>
 <body>
 
@@ -13,9 +12,9 @@
         <span class="glitch-text">LEVI´S NIGHTMARE</span>
     </h1>
 
-    
     <div class="container">
-        <img id="levi-image" src="imagens/levi.jpeg" alt="Levi"> 
+        <!-- Imagem inicial -->
+        <img id="levi-image" src="levi.jpeg" alt="Levi" onerror="alert('Imagem não encontrada: levi.jpeg')">
         <div class="story">
             <p id="carousel-text">Levi, um estudante exausto, adormeceu durante a aula de matemática. Quando acordou, se viu em um mundo sombrio, cercado por monstros que o atacam com problemas matemáticos. Ele agora deve enfrentar seu maior pesadelo: resolver contas para escapar!</p>
         </div>
@@ -28,29 +27,34 @@
     </div>
 
     <div style="text-align: center;">
-        <button class="play-button">Clique para salvar o Levi</button>
+       <a target="_blank" href="https://jogo-logp.github.io/base/main">
+           <button class="play-button">Clique para salvar o Levi</button>
+       </a>
     </div>
 
     <script>
         let currentStory = 0;
         const stories = [
-            {
-                text: "Levi, um estudante exausto, adormeceu durante a aula de matemática. Quando acordou, se viu em um mundo sombrio, cercado por monstros que o atacam com problemas matemáticos. Ele agora deve enfrentar seu maior pesadelo: resolver contas para escapar!",
-                image: "imagens/dormindo.jfif"
-            },
-            {
-                text: "Explicação de como o jogo funciona: O jogador tem 5 vidas. Monstros aparecem da direita para a esquerda. A cada resposta correta, aumenta-se o score e o monstro é derrotado. A cada sequência de 10 respostas corretas, o player recupera uma vida. A cada resposta errada, perde-se uma vida. Quando as vidas forem zero, o jogo termina.",
-                image: "imagens/jogo.png" // URL da segunda imagem
-            },
-            {
-                text: "Por que jogar: Decorar contas básicas das quatro operações principais (adição, subtração, multiplicação e divisão) facilita cálculos rápidos no dia a dia, serve como base para conceitos avançados, e aumenta a confiança ao lidar com números.",
-                image: "imagens/mat.jpg" // URL da terceira imagem
-            }
+            "Levi, um estudante exausto, adormeceu durante a aula de matemática. Quando acordou, se viu em um mundo sombrio, cercado por monstros que o atacam com problemas matemáticos. Ele agora deve enfrentar seu maior pesadelo: resolver contas para escapar!",
+            "Explicação de como o jogo funciona: O jogador tem 5 vidas. Monstros aparecem da direita para a esquerda. A cada resposta correta, aumenta-se o score e o monstro é derrotado. A cada sequência de 10 respostas corretas, o player recupera uma vida. A cada resposta errada, perde-se uma vida. Quando as vidas forem zero, o jogo termina.",
+            "Por que jogar: Decorar contas básicas das quatro operações principais (adição, subtração, multiplicação e divisão) facilita cálculos rápidos no dia a dia, serve como base para conceitos avançados, e aumenta a confiança ao lidar com números."
+        ];
+
+        const images = [
+            "dormindo.jpeg",  // Imagem para a primeira história
+            "jogo.png",  // Imagem para a segunda história
+            "mat.jpg"   // Imagem para a terceira história
         ];
 
         function updateStory() {
-            document.getElementById('carousel-text').innerText = stories[currentStory].text;
-            document.getElementById('levi-image').src = stories[currentStory].image;
+            document.getElementById('carousel-text').innerText = stories[currentStory];
+            const imageElement = document.getElementById('levi-image');
+            imageElement.src = images[currentStory];
+
+            // Verificação para garantir que a imagem está carregando
+            imageElement.onerror = function() {
+                alert('Imagem não encontrada: ' + images[currentStory]);
+            };
         }
 
         function previousStory() {
@@ -62,9 +66,6 @@
             currentStory = (currentStory === stories.length - 1) ? 0 : currentStory + 1;
             updateStory();
         }
-
-        // Inicializa o primeiro texto e imagem
-        updateStory();
     </script>
 
 </body>
