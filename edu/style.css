@@ -3,12 +3,26 @@
 body {
     margin: 0;
     padding: 0;
-    font-family: 'Arial', sans-serif;
-    background-image: url(imagens/fundo2.webp);
+    font-family: 'Courier New', Courier, monospace;
+    background-image: url(imagens/fundo5.jpg);
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
-    color: white;
+    color: rgb(0, 0, 0);
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url(imagens/fundo5.jpg);
+    background-size: cover;
+    background-position: center;
+    filter: blur(4px); /* Ajuste o valor do desfoque aqui */
+    z-index: -1; /* Coloca o fundo atrás do conteúdo */
 }
 
 h1 {
@@ -16,7 +30,11 @@ h1 {
     font-size: 50px;
     color: rgb(66, 63, 247);
     text-align: left;
-    text-shadow: 3px 3px 5px black;
+    text-shadow: 
+    -3px -3px 0 #ffffff, /* Sombra superior esquerda */
+    3px -3px 0 #ffffff, /* Sombra superior direita */
+   -3px  3px 0 #ffffff, /* Sombra inferior esquerda */
+    3px  3px 0 #ffffff; /* Sombra inferior direita */;
     margin: 20px 0 0 40px;
     position: relative;
 }
@@ -24,8 +42,11 @@ h1 {
 .glitch-text {
     position: relative;
     display: inline-block;
+    left: 20%;
+    margin: 45px;
     /* A animação só é ativada quando o mouse está sobre o h1 */
 }
+
 
 h1:hover .glitch-text {
     animation: glitch 1.5s infinite;
@@ -91,8 +112,13 @@ h1:hover .glitch-text {
 #levi-image {
     width: 600px; /* Aumentado para cima e para baixo */
     height: auto;
-    border-radius: 10px;
-    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.7);
+    border-radius: 60px;
+    box-shadow: 
+    -7px -7px 0 #ffffff, /* Sombra superior esquerda */
+    7px -7px 0 #ffffff, /* Sombra superior direita */
+   -7px  7px 0 #ffffff, /* Sombra inferior esquerda */
+    7px  7px 0 #ffffff; /* Sombra inferior direita */;
+    
 }
 
 #levi-image:hover{
@@ -101,13 +127,14 @@ h1:hover .glitch-text {
 .story {
     flex: 1;
     margin-left: 80px;
-    background: rgba(0, 0, 0, 0.6); /* Fundo transparente para o texto */
+    background: rgb(129, 131, 245, 0.8); /* Fundo transparente para o texto */
     padding: 20px;
     border-radius: 10px;
+
 }
 
 .story p {
-    font-size: 18px;
+    font-size: 22px;
     line-height: 1.6;
     margin-bottom: 15px;
 }
@@ -118,8 +145,8 @@ h1:hover .glitch-text {
 }
 
 .arrow {
-    font-size: 40px;
-    color: rgb(66, 63, 247);
+    font-size: 70px;
+    color: rgb(255, 23, 23);
     cursor: pointer;
     margin: 0 20px;
 }
