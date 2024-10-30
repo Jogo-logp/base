@@ -11,10 +11,10 @@
     <h1>
         <span class="glitch-text">LEVI´S NIGHTMARE</span>
     </h1>
-    
 
     <div class="container">
-        <img id="levi-image" src="imagens/levi.jpeg" alt="Levi"> 
+        <!-- Imagem inicial -->
+        <img id="levi-image" src="imagens/levi.jpeg" alt="Levi" onerror="alert('Imagem não encontrada: levi.jpeg')">
         <div class="story">
             <p id="carousel-text">Levi, um estudante exausto, adormeceu durante a aula de matemática. Quando acordou, se viu em um mundo sombrio, cercado por monstros que o atacam com problemas matemáticos. Ele agora deve enfrentar seu maior pesadelo: resolver contas para escapar!</p>
         </div>
@@ -27,7 +27,9 @@
     </div>
 
     <div style="text-align: center;">
-       <a target="_blank" href="https://jogo-logp.github.io/base/main"> <button class="play-button"> Clique para salvar o Levi</button></a>
+       <a target="_blank" href="https://jogo-logp.github.io/base/main">
+           <button class="play-button">Clique para salvar o Levi</button>
+       </a>
     </div>
 
     <script>
@@ -38,8 +40,21 @@
             "Por que jogar: Decorar contas básicas das quatro operações principais (adição, subtração, multiplicação e divisão) facilita cálculos rápidos no dia a dia, serve como base para conceitos avançados, e aumenta a confiança ao lidar com números."
         ];
 
+        const images = [
+            "imagens/dormindo.jpeg",  // Imagem para a primeira história
+            "imagens/jogo.png",  // Imagem para a segunda história
+            "imagens/mat.jpg"   // Imagem para a terceira história
+        ];
+
         function updateStory() {
             document.getElementById('carousel-text').innerText = stories[currentStory];
+            const imageElement = document.getElementById('levi-image');
+            imageElement.src = images[currentStory];
+
+            // Verificação para garantir que a imagem está carregando
+            imageElement.onerror = function() {
+                alert('Imagem não encontrada: ' + images[currentStory]);
+            };
         }
 
         function previousStory() {
