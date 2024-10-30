@@ -15,6 +15,8 @@ const gameoversound =document.getElementById('gameoversound');
 const musicaambiente =document.getElementById('ambientesound');
 const levelupsound = document.getElementById ('levelupsound');
 const introsound = document.getElementById ('introsound');
+const buttonsound = document.getElementById ('buttonsound');
+const hurtsound = document.getElementById('hurt');
 const play=document.getElementById('play')
 
 
@@ -157,7 +159,15 @@ function playlevelupsound(){
 function playintrosound(){
     introsound.play();
 }
-
+function pauseintrosound(){
+    introsound.pause();
+}
+function playbuttonsound(){
+    buttonsound.play();
+}
+function playhurtound(){
+    hurtsound.play();
+}
 
 function desenhoframe() {  // função para desenhar o levi levigif
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -255,6 +265,7 @@ function checarresposta() {
     } else {
         respostaserradas++;
         trocaranimacao("over", 2000);
+        playhurtound();
         acertosconsecutivos = 0; // Reseta os acertos consecutivos se errar
         if (respostaserradas >= totaldevida) {
             telagameover();
@@ -263,6 +274,7 @@ function checarresposta() {
             v--
         } if (v<2){
             trocaranimacao("dano", 5000);
+        
         }
     }
     
@@ -362,6 +374,7 @@ function telagameover() {
 }
 
 document.getElementById('play').addEventListener('click', function(){
+    playbuttonsound();
     instrucoes=false;
     gameover=false;
     exibirinstrucoes.classList.add('hidden');
@@ -371,6 +384,7 @@ document.getElementById('play').addEventListener('click', function(){
 function telainstrucoes() {
     instrucoes = true;
     exibirinstrucoes.classList.remove('hidden'); //push
+    //playintrosound();
     pauseambientesound();
 }
 
@@ -414,7 +428,6 @@ function restart() { // reinicia o jogo
     playambientesound();
     requestAnimationFrame(loopdogame);  // Iniciar o loop de animação do jogo
 }
-
 telainstrucoes();
 contas();
 function loopdogame() {
@@ -422,6 +435,7 @@ function loopdogame() {
         loopdojg = requestAnimationFrame(loopdogame);  // Continua o loop
 
         playambientesound();
+        pauseintrosound();
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         desenhoframe();
@@ -442,7 +456,8 @@ function loopdogame() {
 
         // Checa se o fantasma chegou ao Levi
         if (ghost.y + ghost.height >= levizao.y && ghost.x < levizao.x + levizao.width) {
-            trocaranimacao("over", 2000)
+            trocaranimacao("over", 2000);
+            playhurtound();
             resetarghost();  // Reseta a posição do fantasma
             respostaserradas++;  // Incrementa respostas erradas
             v--;  // Reduz as vidas
@@ -487,36 +502,44 @@ window.addEventListener("keydown", function(event) {
       else if (event.key === "-" && userinput.length === 0) {
         userinput += event.key; // Permite que o usuário insira o sinal negativo 
     } else if (event.key === 'P' || event.key ==='p'){
+        playbuttonsound();
         pararojogo();
     } else if (event.key == 'R'  || event.key ==='r'){
+        playbuttonsound();
         voltaraojogo();
     }
 });
 
 document.getElementById('play-again').addEventListener('click', function(){
+    playbuttonsound();
     gameover=false;
     requestAnimationFrame(loopdogame);
     restart();
 });
 
 document.getElementById('play-again2').addEventListener('click', function(){
+    playbuttonsound();
     gameover=false;
     requestAnimationFrame(loopdogame);
     restart();
 });
 document.getElementById('exit-game').addEventListener('click', function() {
+    playbuttonsound();
     gameover = true;
     cancelAnimationFrame(loopdojg);
     document.getElementById('game-container').style.display = 'none';
     pauseambientesound();
 });
 document.getElementById('exit-game2').addEventListener('click', function() {
+    playbuttonsound();
     gameover = true;
     cancelAnimationFrame(loopdojg);
     document.getElementById('game-container').style.display = 'none';
     pauseambientesound;
 });
-
+document.getElementById('site').addEventListener('click', function() {
+    playbuttonsound();
+});
 
 
 loopdogame();
