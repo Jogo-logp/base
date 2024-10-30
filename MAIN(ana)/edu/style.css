@@ -32,10 +32,10 @@ h1 {
     color: rgb(66, 63, 247);
     text-align: left;
     text-shadow: 
-    -3px -3px 0 #ffffff, /* Sombra superior esquerda */
-    3px -3px 0 #ffffff, /* Sombra superior direita */
-   -3px  3px 0 #ffffff, /* Sombra inferior esquerda */
-    3px  3px 0 #ffffff; /* Sombra inferior direita */;
+    -3px -3px 0 #ff0000, /* Sombra superior esquerda */
+    3px -3px 0 #ff0000, /* Sombra superior direita */
+   -3px  3px 0 #ff0000, /* Sombra inferior esquerda */
+    3px  3px 0 #ff0000; /* Sombra inferior direita */;
     margin: 20px 0 0 40px;
     position: relative;
 }
