@@ -11,8 +11,8 @@
     <h1>
         <span class="glitch-text">LEVI´S NIGHTMARE</span>
     </h1>
-    
 
+    
     <div class="container">
         <img id="levi-image" src="imagens/levi.jpeg" alt="Levi"> 
         <div class="story">
@@ -27,19 +27,29 @@
     </div>
 
     <div style="text-align: center;">
-       <a target="_blank" href="../index.html"> <button class="play-button"> Clique para salvar o Levi</button></a>
+        <button class="play-button">Clique para salvar o Levi</button>
     </div>
 
     <script>
         let currentStory = 0;
         const stories = [
-            "Levi, um estudante exausto, adormeceu durante a aula de matemática. Quando acordou, se viu em um mundo sombrio, cercado por monstros que o atacam com problemas matemáticos. Ele agora deve enfrentar seu maior pesadelo: resolver contas para escapar!",
-            "Explicação de como o jogo funciona: O jogador tem 5 vidas. Monstros aparecem da direita para a esquerda. A cada resposta correta, aumenta-se o score e o monstro é derrotado. A cada sequência de 10 respostas corretas, o player recupera uma vida. A cada resposta errada, perde-se uma vida. Quando as vidas forem zero, o jogo termina.",
-            "Por que jogar: Decorar contas básicas das quatro operações principais (adição, subtração, multiplicação e divisão) facilita cálculos rápidos no dia a dia, serve como base para conceitos avançados, e aumenta a confiança ao lidar com números."
+            {
+                text: "Levi, um estudante exausto, adormeceu durante a aula de matemática. Quando acordou, se viu em um mundo sombrio, cercado por monstros que o atacam com problemas matemáticos. Ele agora deve enfrentar seu maior pesadelo: resolver contas para escapar!",
+                image: "imagens/dormindo.jfif"
+            },
+            {
+                text: "Explicação de como o jogo funciona: O jogador tem 5 vidas. Monstros aparecem da direita para a esquerda. A cada resposta correta, aumenta-se o score e o monstro é derrotado. A cada sequência de 10 respostas corretas, o player recupera uma vida. A cada resposta errada, perde-se uma vida. Quando as vidas forem zero, o jogo termina.",
+                image: "imagens/jogo.png" // URL da segunda imagem
+            },
+            {
+                text: "Por que jogar: Decorar contas básicas das quatro operações principais (adição, subtração, multiplicação e divisão) facilita cálculos rápidos no dia a dia, serve como base para conceitos avançados, e aumenta a confiança ao lidar com números.",
+                image: "imagens/mat.jpg" // URL da terceira imagem
+            }
         ];
 
         function updateStory() {
-            document.getElementById('carousel-text').innerText = stories[currentStory];
+            document.getElementById('carousel-text').innerText = stories[currentStory].text;
+            document.getElementById('levi-image').src = stories[currentStory].image;
         }
 
         function previousStory() {
@@ -51,6 +61,9 @@
             currentStory = (currentStory === stories.length - 1) ? 0 : currentStory + 1;
             updateStory();
         }
+
+        // Inicializa o primeiro texto e imagem
+        updateStory();
     </script>
 
 </body>
