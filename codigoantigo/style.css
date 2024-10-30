@@ -1,0 +1,199 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+body {
+    font-family: 'Press Start 2P', cursive;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+/*#levigif{
+    bottom: 80px;
+    top: 380px;
+    width: 150;
+    height: 200;
+}*/
+body, html {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #000;
+}
+
+#game-container {
+    position: relative;
+}
+
+canvas {
+    border: 2px solid white;
+    background-image: url(imagens/sala_de_aula.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: block;
+}
+
+#gameCanvas {
+    width: 800px;
+    height: 600px;
+}
+
+
+#vidas {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    color: white;
+    font-size: 20px;
+    font-family: 'Press Start 2P', cursive; /* Fonte em estilo pixel */
+}
+
+#game_over {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: rgb(252, 252, 252);
+    text-shadow:  5px 5px 10px rgb(241, 40, 36);
+    font-size: 25px;
+    font-family: 'Press Start 2P', cursive; /* Fonte em estilo pixel */
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.8); /* Fundo semitransparente */
+    padding: 20px;
+    border-radius: 10px;
+}
+#instrucoes{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    background-color: #fbfbfbc5;
+    color: rgb(0, 0, 0);
+    text-shadow: 5px 5px 10px #630404;
+    font-family: 'Press Start 2P';
+    font-size: 13px;
+    padding: 35px;
+    border-radius: 10px;
+    text-align: center;
+    align-content: center;
+    font-weight:bolder;
+}
+a{
+    text-decoration: none;
+}
+#instrucoes2{
+    color: rgb(21, 14, 14);
+    text-shadow: 5px 5px 10px rgb(0, 0, 0);
+    font-family: 'Press Start 2P';
+    font-size: 11px;
+    text-align: center;
+    align-items: center;
+    align-self: center;
+    font-weight: lighter;
+}
+#play, #site{
+    margin-top: 20px;
+    padding: 7px 10px;
+    font-size: 10px;
+    font-family: 'Press Start 2P', cursive; /* Fonte em estilo pixel */
+    background-color: white;
+    color: black;
+    border: none;
+    cursor: pointer;
+}
+#play:hover,#site:hover{
+    background-color: rgba(101, 101, 101, 0.563);
+    transform: scale(1.1);
+}
+#game_won {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: rgb(252, 252, 252);
+    text-shadow:  5px 5px 10px rgb(241, 40, 36);
+    font-size: 25px;
+    font-family: 'Press Start 2P', cursive; /* Fonte em estilo pixel */
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.8); /* Fundo semitransparente */
+    padding: 20px;
+    border-radius: 10px;
+}
+h3{
+    font-size: 18px;
+}
+#fase1 {
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 15px;
+    border-radius: 10px;
+    color: rgb(241, 40, 36);
+    text-shadow:  2px 2px 0 rgb(0, 0, 0);
+    font-size: 7px;
+    font-family: 'Press Start 2P', cursive; /* Fonte em estilo pixel */
+    text-align: center;
+}
+#fase2 {
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 15px;
+    border-radius: 10px;
+    color: rgb(241, 40, 36);
+    text-shadow:  2px 2px 0 rgb(0, 0, 0);
+    font-size: 7px;
+    font-family: 'Press Start 2P', cursive; /* Fonte em estilo pixel */
+    text-align: center;
+}
+#fase3 {
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 15px;
+    border-radius: 10px;
+    color: rgb(241, 40, 36);
+    text-shadow:  2px 2px 0 rgb(0, 0, 0);
+    font-size: 7px;
+    font-family: 'Press Start 2P', cursive; /* Fonte em estilo pixel */
+    text-align: center;
+}
+#play-again, #exit-game {
+    margin-top: 10px;
+    padding: 10px 20px;
+    font-size: 20px;
+    font-family: 'Press Start 2P', cursive; /* Fonte em estilo pixel */
+    background-color: white;
+    color: black;
+    border: none;
+    cursor: pointer;
+}
+
+#play-again:hover, #exit-game:hover {
+    background-color: rgb(241, 40, 36);
+}
+#play-again2, #exit-game2 {
+    margin-top: 10px;
+    padding: 10px 20px;
+    font-size: 20px;
+    font-family: 'Press Start 2P', cursive; /* Fonte em estilo pixel */
+    background-color: white;
+    color: black;
+    border: none;
+    cursor: pointer;
+}
+
+#play-again2:hover, #exit-game2:hover {
+    background-color: rgb(241, 40, 36);
+}
+.hidden {
+    display: none;
+}
