@@ -4,7 +4,7 @@ body {
     margin: 0;
     padding: 0;
 
-    background-image: url(fundo2.webp);
+    background-image: url(imagens/fundo2.webp);
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
